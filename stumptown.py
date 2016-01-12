@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from app import coffee
 # scraping stumptown
 roaster = 'Stumptown'
 stumptown = 'https://www.stumptowncoffee.com/coffee'
@@ -25,6 +26,7 @@ for items in coffees_for_sale:
             status = 'Sold Out'
         else:
             status = 'Available'
+        coffee = Coffee(name=name, roaster=roaster, description=description, price=price, notes =notes, region=region, status=status)
 
 
 
