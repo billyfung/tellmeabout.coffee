@@ -14,7 +14,9 @@ def scrape():
     for items in coffees_for_sale:
         url = items['href']
         if not 'trio' in url:
-            r = requests.get('https://www.stumptowncoffee.com'+url)
+            name,price,description,notes,region,status,size = [""]*7
+            product_url = 'https://www.stumptowncoffee.com'+url
+            r = requests.get(product_url)
             coffee_soup = BeautifulSoup(r.content)
             # product name h1 class="product _title -desktop theme-color js-pdp-title"
             name = coffee_soup.h1.string.strip()
@@ -33,7 +35,11 @@ def scrape():
                 status = 'Sold Out'
             else:
                 status = 'Available'
-            coffee = Coffee(name=name, roaster=roaster, description=description, price=price, notes =notes, region=region, status=status)
+            # size in ounces
+            size = coffee_soup.find('div', {'class':'product _specs'}).find_all('p')[1].string.split()[2]
+            coffee = Coffee(name=name, roaster=roaster, description=description, 
+                price=price, notes=notes, region=region, status=status,
+                product_page=product_url, size=size)
             coffee.put()
 
 
