@@ -12,6 +12,10 @@ class Coffee(ndb.Model):
     description = ndb.StringProperty()
     date_added = ndb.DateTimeProperty(auto_now_add=True)
     date_removed = ndb.DateTimeProperty()
+    price = ndb.StringProperty()
+    notes = ndb.StringProperty()
+    region = ndb.StringProperty()
+    status = ndb.StringProperty()
 
     @classmethod
     def query_book(cls, ancestor_key):
@@ -22,7 +26,7 @@ class Coffee(ndb.Model):
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
-    return 'Hello World! this is jin'
+    return 'Hello World! this is billy'
 
 
 @app.errorhandler(404)

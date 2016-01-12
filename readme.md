@@ -11,3 +11,8 @@ Flask + App Engine + NDB
     - name: tellmeaboutcoffee
     - path: whereever you git cloned
 4. Run using the Launcher and verify!
+
+### Adding external packages
+```
+pip install <package_name> -t lib/
+```
