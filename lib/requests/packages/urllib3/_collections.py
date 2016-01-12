@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from collections import Mapping, MutableMapping
 try:
     from threading import RLock
@@ -98,7 +97,14 @@ class RecentlyUsedContainer(MutableMapping):
             return list(iterkeys(self._container))
 
 
-class HTTPHeaderDict(MutableMapping):
+_dict_setitem = dict.__setitem__
+_dict_getitem = dict.__getitem__
+_dict_delitem = dict.__delitem__
+_dict_contains = dict.__contains__
+_dict_setdefault = dict.setdefault
+
+
+class HTTPHeaderDict(dict):
     """
     :param headers:
         An iterable of field-value pairs. Must not contain multiple field names
@@ -133,8 +139,7 @@ class HTTPHeaderDict(MutableMapping):
     """
 
     def __init__(self, headers=None, **kwargs):
-        super(HTTPHeaderDict, self).__init__()
-        self._container = {}
+        dict.__init__(self)
         if headers is not None:
             if isinstance(headers, HTTPHeaderDict):
                 self._copy_from(headers)
@@ -144,43 +149,37 @@ class HTTPHeaderDict(MutableMapping):
             self.extend(kwargs)
 
     def __setitem__(self, key, val):
-        self._container[key.lower()] = (key, val)
-        return self._container[key.lower()]
+        return _dict_setitem(self, key.lower(), (key, val))
 
     def __getitem__(self, key):
-        val = self._container[key.lower()]
+        val = _dict_getitem(self, key.lower())
         return ', '.join(val[1:])
 
     def __delitem__(self, key):
-        del self._container[key.lower()]
+        return _dict_delitem(self, key.lower())
 
     def __contains__(self, key):
-        return key.lower() in self._container
+        return _dict_contains(self, key.lower())
 
     def __eq__(self, other):
         if not isinstance(other, Mapping) and not hasattr(other, 'keys'):
             return False
         if not isinstance(other, type(self)):
             other = type(self)(other)
-        return (dict((k.lower(), v) for k, v in self.itermerged()) ==
-                dict((k.lower(), v) for k, v in other.itermerged()))
+        return dict((k1, self[k1]) for k1 in self) == dict((k2, other[k2]) for k2 in other)
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    if not PY3:  # Python 2
+    values = MutableMapping.values
+    get = MutableMapping.get
+    update = MutableMapping.update
+    
+    if not PY3: # Python 2
         iterkeys = MutableMapping.iterkeys
         itervalues = MutableMapping.itervalues
 
     __marker = object()
-
-    def __len__(self):
-        return len(self._container)
-
-    def __iter__(self):
-        # Only provide the originally cased names
-        for vals in self._container.values():
-            yield vals[0]
 
     def pop(self, key, default=__marker):
         '''D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
@@ -217,7 +216,7 @@ class HTTPHeaderDict(MutableMapping):
         key_lower = key.lower()
         new_vals = key, val
         # Keep the common case aka no item present as fast as possible
-        vals = self._container.setdefault(key_lower, new_vals)
+        vals = _dict_setdefault(self, key_lower, new_vals)
         if new_vals is not vals:
             # new_vals was not inserted, as there was a previous one
             if isinstance(vals, list):
@@ -226,22 +225,22 @@ class HTTPHeaderDict(MutableMapping):
             else:
                 # vals should be a tuple then, i.e. only one item so far
                 # Need to convert the tuple to list for further extension
-                self._container[key_lower] = [vals[0], vals[1], val]
+                _dict_setitem(self, key_lower, [vals[0], vals[1], val])
 
-    def extend(self, *args, **kwargs):
+    def extend(*args, **kwargs):
         """Generic import function for any type of header-like object.
         Adapted version of MutableMapping.update in order to insert items
         with self.add instead of self.__setitem__
         """
-        if len(args) > 1:
-            raise TypeError("extend() takes at most 1 positional "
-                            "arguments ({0} given)".format(len(args)))
-        other = args[0] if len(args) >= 1 else ()
-
-        if isinstance(other, HTTPHeaderDict):
-            for key, val in other.iteritems():
-                self.add(key, val)
-        elif isinstance(other, Mapping):
+        if len(args) > 2:
+            raise TypeError("update() takes at most 2 positional "
+                            "arguments ({} given)".format(len(args)))
+        elif not args:
+            raise TypeError("update() takes at least 1 argument (0 given)")
+        self = args[0]
+        other = args[1] if len(args) >= 2 else ()
+        
+        if isinstance(other, Mapping):
             for key in other:
                 self.add(key, other[key])
         elif hasattr(other, "keys"):
@@ -258,7 +257,7 @@ class HTTPHeaderDict(MutableMapping):
         """Returns a list of all the values for the named field. Returns an
         empty list if the key doesn't exist."""
         try:
-            vals = self._container[key.lower()]
+            vals = _dict_getitem(self, key.lower())
         except KeyError:
             return []
         else:
@@ -277,11 +276,11 @@ class HTTPHeaderDict(MutableMapping):
 
     def _copy_from(self, other):
         for key in other:
-            val = other.getlist(key)
+            val = _dict_getitem(other, key)
             if isinstance(val, list):
                 # Don't need to convert tuples
                 val = list(val)
-            self._container[key.lower()] = [key] + val
+            _dict_setitem(self, key, val)
 
     def copy(self):
         clone = type(self)()
@@ -291,34 +290,31 @@ class HTTPHeaderDict(MutableMapping):
     def iteritems(self):
         """Iterate over all header lines, including duplicate ones."""
         for key in self:
-            vals = self._container[key.lower()]
+            vals = _dict_getitem(self, key)
             for val in vals[1:]:
                 yield vals[0], val
 
     def itermerged(self):
         """Iterate over all headers, merging duplicate ones together."""
         for key in self:
-            val = self._container[key.lower()]
+            val = _dict_getitem(self, key)
             yield val[0], ', '.join(val[1:])
 
     def items(self):
         return list(self.iteritems())
 
     @classmethod
-    def from_httplib(cls, message):  # Python 2
+    def from_httplib(cls, message, duplicates=('set-cookie',)): # Python 2
         """Read headers from a Python 2 httplib message object."""
-        # python2.7 does not expose a proper API for exporting multiheaders
-        # efficiently. This function re-reads raw lines from the message
-        # object and extracts the multiheaders properly.
-        headers = []
-
-        for line in message.headers:
-            if line.startswith((' ', '\t')):
-                key, value = headers[-1]
-                headers[-1] = (key, value + '\r\n' + line.rstrip())
-                continue
-
-            key, value = line.split(':', 1)
-            headers.append((key, value.strip()))
-
-        return cls(headers)
+        ret = cls(message.items())
+        # ret now contains only the last header line for each duplicate.
+        # Importing with all duplicates would be nice, but this would
+        # mean to repeat most of the raw parsing already done, when the
+        # message object was created. Extracting only the headers of interest 
+        # separately, the cookies, should be faster and requires less
+        # extra code.
+        for key in duplicates:
+            ret.discard(key)
+            for val in message.getheaders(key):
+                ret.add(key, val)
+            return ret

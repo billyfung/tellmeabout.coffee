@@ -6,7 +6,7 @@
 #          /
 
 """
-Requests HTTP library
+requests HTTP library
 ~~~~~~~~~~~~~~~~~~~~~
 
 Requests is an HTTP library, written in Python, for human beings. Basic GET
@@ -42,8 +42,8 @@ is at <http://python-requests.org>.
 """
 
 __title__ = 'requests'
-__version__ = '2.9.1'
-__build__ = 0x020901
+__version__ = '2.6.0'
+__build__ = 0x020503
 __author__ = 'Kenneth Reitz'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2015 Kenneth Reitz'
@@ -62,8 +62,7 @@ from .sessions import session, Session
 from .status_codes import codes
 from .exceptions import (
     RequestException, Timeout, URLRequired,
-    TooManyRedirects, HTTPError, ConnectionError,
-    FileModeWarning,
+    TooManyRedirects, HTTPError, ConnectionError
 )
 
 # Set default logging handler to avoid "No handler found" warnings.
@@ -76,8 +75,3 @@ except ImportError:
             pass
 
 logging.getLogger(__name__).addHandler(NullHandler())
-
-import warnings
-
-# FileModeWarnings go off per the default.
-warnings.simplefilter('default', FileModeWarning, append=True)
