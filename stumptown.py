@@ -27,6 +27,7 @@ for items in coffees_for_sale:
         else:
             status = 'Available'
         coffee = Coffee(name=name, roaster=roaster, description=description, price=price, notes =notes, region=region, status=status)
+        coffee.put()
 
 
 
