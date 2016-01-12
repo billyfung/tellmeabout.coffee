@@ -21,8 +21,14 @@ def scrape():
             price = coffee_soup.find_all('span',{'class':'js-pdp-price'})[0].string
             # div class="product _description
             description = coffee_soup.find('div', {'class':'product _description'}).p.string
-            notes = coffee_soup.h3.string
-            region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
+            try:
+                notes = coffee_soup.h3.string
+            except:
+                pass
+            try:
+                region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
+            except:
+                pass
             if coffee_soup.h6:
                 status = 'Sold Out'
             else:
