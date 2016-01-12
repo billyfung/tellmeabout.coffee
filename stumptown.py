@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from main import Coffee
+from models import Coffee
 # scraping stumptown
 def scrape():
     roaster = 'Stumptown'
