@@ -1,0 +1,40 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>tellmeabout.coffee</title>
+  <meta name="description" content="tells you about coffee">
+  <meta name="author" content="jieb">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+
+<body>
+
+<h2>Coffees</h2>
+
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Roaster</td>
+        <td>Description</td>
+        <td>Tasting Notes</td>
+        <td>Date Added</td>
+        <td>Date Removed</td>
+    </tr>
+    {% for coffee in coffees %}
+        <tr>
+            <td>{{ coffee.name }}</td>
+            <td>{{ coffee.roaster }}</td>
+            <td>{{ coffee.description }}</td>
+            <td>{{ coffee.tasting_notes }}</td>
+            <td>{{ coffee.date_added }}</td>
+            <td>{{ coffee.date_removed }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
