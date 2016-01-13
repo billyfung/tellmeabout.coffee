@@ -6,8 +6,6 @@ WSGI applications specified in app.yaml are loaded.
 import os
 from google.appengine.ext import vendor
 
-import os
-
 # Workaround the dev-environment SSL
 #   http://stackoverflow.com/q/16192916/893652
 if os.environ.get('SERVER_SOFTWARE', '').startswith('Development'):
