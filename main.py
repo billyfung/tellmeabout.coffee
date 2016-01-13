@@ -1,14 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 from google.appengine.ext import ndb
+from models import Coffee
 
 app = Flask(__name__)
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
 @app.route('/')
-def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello World! this is billy'
+def index():
+    """Lists the coffeez"""
+    coffees = Coffee.query().fetch()
+    return render_template('index.html', coffees=coffees)
 
 
 @app.errorhandler(404)
