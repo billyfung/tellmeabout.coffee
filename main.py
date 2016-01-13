@@ -5,26 +5,6 @@ app = Flask(__name__)
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
-
-class Coffee(ndb.Model):
-    name = ndb.StringProperty()
-    roaster = ndb.StringProperty()
-    description = ndb.StringProperty()
-    date_added = ndb.DateTimeProperty(auto_now_add=True)
-    date_removed = ndb.DateTimeProperty()
-    price = ndb.IntegerProperty()
-    notes = ndb.StringProperty()
-    region = ndb.StringProperty()
-    status = ndb.StringProperty()
-    product_page = ndb.StringProperty()
-    size = ndb.IntegerProperty()
-
-    @classmethod
-    def query_book(cls, ancestor_key):
-        return cls.query(ancestor=ancestor_key).order(-cls.date)
-
-
-
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
