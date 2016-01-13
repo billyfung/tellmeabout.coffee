@@ -21,4 +21,9 @@ for item in coffees_for_sale:
     region = coffee_soup.find(text='Region').next_element.string + ', ' + coffee_soup.find(text='Country').next_element.string
     description = coffee_soup.find('div', {'class':'product-body'}).string
 
+    coffee = Coffee(name=name, roaster=roaster, description=description,
+                price=price, notes=notes, region=region, status=status,
+                product_page=product_url, size=size)
+    coffee.put()
+
 
