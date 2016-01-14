@@ -20,7 +20,11 @@ def victrola_scraping():
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
         name = coffee_soup.h2.string
+        if 'Subscription' in name:
+            break
+        print product_url
         price = coffee_soup.find(itemprop='price').string.strip()[2:]
+        print price
         d = coffee_soup.find(itemprop='description').find_all('span')
         if 'Blend' in name:
             # different stuff for blends
@@ -30,20 +34,19 @@ def victrola_scraping():
                 description += x.string
         else:
             # sometimes tasting notes just alone
-            tasting_notes = soup.find(text="Tasting Notes").next_element.strip()
-            if not tasting_notes:
-                # checking to see if empty
-                notes = coffee_soup.find(text='Flavor:').string
-            else:
-                notes = tasting_notes[2:]
             try:
-                region = d(text=re.compile(r'Region:'))[0][8:]
+                notes = coffee_soup(text=re.compile('Flavor:'))[1].string.strip()[8:]
             except:
+                notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:]
+                pass
+            try:
+                region = coffee_soup(text=re.compile(r'Region:'))[1][8:]
+            except:
+                region = 'n/a'
                 pass
         size = coffee_soup.find('select').option.string[:4]
-
-        coffee = Coffee(name=name, roaster=roaster, description=description, 
+        coffee = Coffee(name=name, roaster=roaster, description=description,
                 price=price, notes=notes, region=region, status=status,
                 product_page=product_url, size=size)
-            coffee.put()
+        coffee.put()
 
