@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from models import Coffee
+import re
 
 # scraping Victrola roasters
 
@@ -19,12 +20,23 @@ for item in coffees_for_sale:
     name = coffee_soup.h2.string
     price = coffee_soup.find(itemprop='price').string.strip()[2:]
     d = coffee_soup.find(itemprop='description').find_all('span')
-    for x in d:
-        desciption += x.string
     if 'Blend' in name:
+        # different stuff for blends
         notes = ''
         region = ''
+        for x in d:
+            description += x.string
     else:
-        notes = coffee_soup.find(text='Flavor:').string
+        # sometimes tasting notes just alone
+        tasting_notes = soup.find(text="Tasting Notes").next_element.strip()
+        if not tasting_notes:
+            # checking to see if empty
+            notes = coffee_soup.find(text='Flavor:').string
+        else:
+            notes = tasting_notes[2:]
+        try:
+            region = d(text=re.compile(r'Region:'))[0][8:]
+        except:
+            pass
     size = coffee_soup.find('select').option.string[:4]
-    
+
