@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 from models import Coffee
+from google.appengine.api import urlfetch
+urlfetch.set_default_fetch_deadline(45)
 
 
 def scrape_intelli():
