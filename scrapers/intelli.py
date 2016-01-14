@@ -17,7 +17,8 @@ def scrape_intelli():
     # each coffee under class="grid_4 node node-type-product-coffee node-teaser build-mode-teaser""
     coffees_for_sale = soup.find_all('div', {'class': 'node-type-product-coffee'})
     for item in coffees_for_sale:
-        name, price, description, notes, region, status, size, product_url = [""] * 8
+        name, description, notes, region, status, size, product_url = [""] * 7
+        price = int()
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
         notes_list = item.p.contents
         notes = notes_list[2] + ', ' + notes_list[4] + ', ' + notes_list[6]
@@ -25,7 +26,7 @@ def scrape_intelli():
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
         try:
-            price = coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:]
+            price = int(float(coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:]))
             # size gives value + unit
             size = coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.next_sibling.strip()[2:]
             status = "Available"
