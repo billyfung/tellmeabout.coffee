@@ -11,4 +11,5 @@ class Coffee(ndb.Model):
     region = ndb.StringProperty()
     status = ndb.StringProperty()
     product_page = ndb.StringProperty()
-    size = ndb.IntegerProperty()
+    size = ndb.StringProperty()
+    dollar_per_size = ndb.IntegerProperty
