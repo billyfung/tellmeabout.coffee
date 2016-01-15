@@ -69,7 +69,7 @@ def scrape_intelli():
             except:
                 error_coffees.append(coffee_data['product_page'])
 
-    logging.info('Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Intelligentsia Results:{} / {}'.format(coffees_entered, total_coffees))
     logging.info(error_coffees)
 
 
