@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from models import Coffee
 import re
+import logging
 
 # scraping Victrola roasters
 
@@ -25,10 +26,9 @@ def scrape_victrola():
         coffee_soup = BeautifulSoup(r.content)
         name = coffee_soup.h2.string
         if 'Subscription' in name:
+            total_coffees-=1
             break
-        print product_url
-        price = int(coffee_soup.find(itemprop='price').string.strip()[2:])
-        print price
+        price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
         d = coffee_soup.find(itemprop='description').find_all('span')
         if 'Blend' in name:
             # different stuff for blends
