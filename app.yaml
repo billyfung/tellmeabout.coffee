@@ -10,6 +10,8 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
+- url:/.*
+  script: scrape_all.py
 
 # App Engine serves and caches static files contained in the listed directories
 # (and subdirectories). Uncomment and set the directory as needed.

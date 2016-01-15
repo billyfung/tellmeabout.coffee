@@ -1,0 +1,5 @@
+cron:
+- description: scrape coffee sites
+  url: /cronjob
+  schedule: every monday 09:00
+  
