@@ -9,9 +9,11 @@ api_version: 1
 threadsafe: yes
 
 # Handlers define how to route requests to your application.
+# changed to scrape_all.app to get rid of EventError: threadsafe cannot be enabled with CGI handler: 
 handlers:
-- url:/.*
-  script: scrape_all.py
+- url: /cronjobs
+  script: scrape_all.app
+  login: admin
 
 # App Engine serves and caches static files contained in the listed directories
 # (and subdirectories). Uncomment and set the directory as needed.
