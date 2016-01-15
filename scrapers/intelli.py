@@ -14,12 +14,22 @@ def scrape_intelli():
 
     # each coffee under class="grid_4 node node-type-product-coffee node-teaser build-mode-teaser""
     coffees_for_sale = soup.find_all('div', {'class': 'node-type-product-coffee'})
-    for item in coffees_for_sale:
+    # there are duplicates, must check
+    seen = set()
+    uniq_coffees_for_sale = []
+    for x in coffees_for_sale:
+        if x not in seen:
+            uniq_coffees_for_sale.append(x)
+            seen.add(x)
+    total_coffees = len(uniq_coffees_for_sale)
+    coffees_entered = 0
+    error_coffees = []
+    for item in uniq_coffees_for_sale:
         name, description, notes, region, status, size, product_url = [""] * 7
         price = int()
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
         notes_list = item.p.contents
-        notes = notes_list[2].strip() + ', ' + notes_list[4].strip() + ', ' + notes_list[6].strip()
+        notes = '{}, {}, {}'.format(notes_list[2].strip(), notes_list[4].strip(), notes_list[6].strip())
         name = item.find('div', {'class': 'productListingDescBox'}).strong.string
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
@@ -53,5 +63,23 @@ def scrape_intelli():
             old_coffees[0].put
         else:
             coffee=Coffee(**coffee_data)
-            coffee.put()
-            logging.info(coffee)
+            try:
+                coffee.put()
+                coffees_entered +=1
+            except:
+                error_coffees.append(coffee_data['product_page'])
+
+    logging.info('Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info(error_coffees)
+
+
+
+
+
+
+
+
+
+
+
+
