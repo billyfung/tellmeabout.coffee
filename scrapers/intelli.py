@@ -5,10 +5,8 @@ from google.appengine.api import urlfetch
 import logging
 
 
-urlfetch.set_default_fetch_deadline(45)
-
-
 def scrape_intelli():
+    urlfetch.set_default_fetch_deadline(10)
     roaster = 'Intelligentsia'
     intelli = 'http://www.intelligentsiacoffee.com/products/coffee'
     r = requests.get(intelli)
@@ -21,7 +19,7 @@ def scrape_intelli():
         price = int()
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
         notes_list = item.p.contents
-        notes = notes_list[2] + ', ' + notes_list[4] + ', ' + notes_list[6]
+        notes = notes_list[2].strip() + ', ' + notes_list[4].strip() + ', ' + notes_list[6].strip()
         name = item.find('div', {'class': 'productListingDescBox'}).strong.string
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
@@ -56,3 +54,4 @@ def scrape_intelli():
         else:
             coffee=Coffee(**coffee_data)
             coffee.put()
+            logging.info(coffee)
