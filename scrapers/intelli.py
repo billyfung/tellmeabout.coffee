@@ -71,15 +71,3 @@ def scrape_intelli():
 
     logging.info('Intelligentsia Results:{} / {}'.format(coffees_entered, total_coffees))
     logging.info(error_coffees)
-
-
-
-
-
-
-
-
-
-
-
-
