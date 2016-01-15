@@ -28,7 +28,11 @@ def scrape_victrola():
         if 'Subscription' in name:
             total_coffees-=1
             break
-        price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
+        try:
+            price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
+            status = 'Available'
+        except:
+            status = "Sold Out"
         d = coffee_soup.find(itemprop='description').find_all('span')
         if 'Blend' in name:
             # different stuff for blends
