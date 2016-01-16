@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from google.appengine.ext import ndb
 from models import Coffee
 import scrapers
+import logging
 
 
 app = Flask(__name__)
