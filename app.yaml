@@ -9,7 +9,6 @@ api_version: 1
 threadsafe: yes
 
 # Handlers define how to route requests to your application.
-# changed to scrape_all.app to get rid of EventError: threadsafe cannot be enabled with CGI handler: 
 handlers:
 - url: /cronjob
   script: main.app
