@@ -22,12 +22,13 @@ def scrape_victrola():
         price = int()
         url = item['href']
         product_url = 'http://www.victrolacoffee.com' + url
+        logging.info("Getting url: {}".format(url))
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
         name = coffee_soup.h2.string
         if 'Subscription' in name:
             total_coffees-=1
-            break
+            continue
         try:
             price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
             status = 'Available'
@@ -52,7 +53,12 @@ def scrape_victrola():
             except:
                 region = 'n/a'
                 pass
-        size = coffee_soup.find('select').option.string[:4]
+        try:
+            size = coffee_soup.find('select').option.string[:4]
+        except:
+            logging.info('Cannot find size for {}'.format(name))
+            size = 'cannot find size'
+            pass
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size}
         old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
         # check if coffee already in db
