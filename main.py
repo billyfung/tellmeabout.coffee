@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from google.appengine.ext import ndb
 from models import Coffee
-import scrapers
+from scrapers 
 import logging
 
 
@@ -30,8 +30,8 @@ def application_error(e):
 @app.route('/cronjob')
 def cron_scrape():
     try:
-        scrapers.stumptown.scrape_intelli()
-        scrapers.intelli.scrape_stumptown()
+        scrapers.intelli.scrape_intelli()
+        scrapers.stumptown.scrape_stumptown()
     except Exception as e:
         logging.warning("Error: {}".format(e))
     return "Finished scraping"
