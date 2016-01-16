@@ -34,7 +34,7 @@ def scrape_intelli():
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
         try:
-            price = int(float(coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:]))
+            price = float(coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:])
             # size gives value + unit
             size = coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.next_sibling.strip()[2:]
             status = "Available"
@@ -70,4 +70,5 @@ def scrape_intelli():
                 error_coffees.append(coffee_data['product_page'])
 
     logging.info('Intelligentsia Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Error coffees are: ')
     logging.info(error_coffees)
