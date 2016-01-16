@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from google.appengine.ext import ndb
 from models import Coffee
-from scrapers 
+import scrapers 
 import logging
 
 
