@@ -1,4 +1,4 @@
 cron:
 - description: scrape coffee sites
   url: /cronjobs
-  schedule: every monday 09:00
+  schedule: every 48 hours
