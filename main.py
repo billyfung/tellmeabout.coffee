@@ -1,6 +1,10 @@
 from flask import Flask, render_template
 from google.appengine.ext import ndb
 from models import Coffee
+from scrapers.intelli import scrape_intelli
+from scrapers.stumptown import scrape_stumptown
+import logging
+
 
 app = Flask(__name__)
 # Note: We don't need to call run() since our application is embedded within
@@ -23,3 +27,12 @@ def page_not_found(e):
 def application_error(e):
     """Return a custom 500 error."""
     return 'Sorry, unexpected error: {}'.format(e), 500
+
+@app.route('/cronjob')
+def cron_scrape():
+    try:
+        scrape_intelli()
+        scrape_stumptown()
+    except Exception as e:
+        logging.warning("Error: {}".format(e))
+    return "Finished scraping"

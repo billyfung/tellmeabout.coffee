@@ -1,0 +1,4 @@
+cron:
+- description: scrape coffee sites
+  url: /cronjob
+  schedule: every 48 hours
