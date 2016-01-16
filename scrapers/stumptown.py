@@ -5,7 +5,7 @@ import logging
 import re
 
 # scraping stumptown
-def scrape():
+def scrape_stumptown():
     roaster = 'Stumptown'
     stumptown = 'https://www.stumptowncoffee.com/coffee'
 
@@ -13,7 +13,10 @@ def scrape():
     soup = BeautifulSoup(r.content, "html.parser")
     # class="product-grid _link"
     coffees_for_sale = soup.find_all('a', {'class':'product-grid _link'})
-
+    # keeping track of how many coffees
+    total_coffees = len(coffees_for_sale)
+    coffees_entered = 0
+    error_coffees = []
     for items in coffees_for_sale:
         url = items['href']
         if not 'trio' in url:
@@ -25,7 +28,7 @@ def scrape():
             # product name h1 class="product _title -desktop theme-color js-pdp-title"
             name = coffee_soup.h1.string.strip()
             try:
-                price = int(coffee_soup.find_all('span',{'class':'js-pdp-price'})[0].string)
+                price = float(coffee_soup.find_all('span',{'class':'js-pdp-price'})[0].string)
             except IndexError as e:
                 logging.warn("Error while getting price for {} : {}".format(name, e))
             # div class="product _description
@@ -47,7 +50,7 @@ def scrape():
 
             # size in ounces
             try:
-                size = int(re.findall('\d+', coffee_soup.find('div', {'class':'product _specs'}).find_all('p')[1].string)[0])
+                size = '{} oz'.format(re.findall('\d+', coffee_soup.find('div', {'class':'product _specs'}).find_all('p')[1].string)[0])
             except Exception as e:
                 logging.warn("Error while getting size for {} : {}".format(name, e))
             coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'status': status, 'product_page': product_url, 'size': size}
@@ -60,8 +63,14 @@ def scrape():
                     setattr(old_coffees[0], key, value)
                 old_coffees[0].put
             else: 
-                coffee = Coffee(**coffee_data)
-                coffee.put()
-
-
-
+                coffee=Coffee(**coffee_data)
+                try:
+                    coffee.put()
+                    coffees_entered +=1
+                except:
+                    error_coffees.append(coffee_data['product_page'])
+        else:
+            total_coffees -= 1
+    logging.info('Stumptown Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Error coffees are: ')
+    logging.info(error_coffees)
