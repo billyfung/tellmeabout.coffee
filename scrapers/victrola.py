@@ -30,6 +30,11 @@ def scrape_victrola():
             total_coffees-=1
             continue
         try:
+            size = coffee_soup.find('select').option.string[:4]
+        except:
+            logging.info('Cannot find size for {}'.format(name))
+            continue
+        try:
             price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
             status = 'Available'
         except:
@@ -53,12 +58,6 @@ def scrape_victrola():
             except:
                 region = 'n/a'
                 pass
-        try:
-            size = coffee_soup.find('select').option.string[:4]
-        except:
-            logging.info('Cannot find size for {}'.format(name))
-            size = 'cannot find size'
-            pass
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size}
         old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
         # check if coffee already in db
