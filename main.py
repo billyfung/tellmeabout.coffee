@@ -3,6 +3,7 @@ from google.appengine.ext import ndb
 from models import Coffee
 from scrapers.intelli import scrape_intelli
 from scrapers.stumptown import scrape_stumptown
+from scrapers.victrola import scrape_victrola
 import logging
 
 
@@ -32,6 +33,7 @@ def application_error(e):
 def cron_scrape():
     try:
         scrape_intelli()
+        scrape_victrola()
         scrape_stumptown()
     except Exception as e:
         logging.warning("Error: {}".format(e))
