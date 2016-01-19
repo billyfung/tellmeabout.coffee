@@ -10,7 +10,7 @@ def scrape_intelli():
     roaster = 'Intelligentsia'
     intelli = 'http://www.intelligentsiacoffee.com/products/coffee'
     r = requests.get(intelli)
-    soup = BeautifulSoup(r.content)
+    soup = BeautifulSoup(r.content, "html.parser")
 
     # each coffee under class="grid_4 node node-type-product-coffee node-teaser build-mode-teaser""
     coffees_for_sale = soup.find_all('div', {'class': 'node-type-product-coffee'})
@@ -23,6 +23,7 @@ def scrape_intelli():
             seen.add(x)
     total_coffees = len(uniq_coffees_for_sale)
     coffees_entered = 0
+    coffees_updated = 0
     error_coffees = []
     for item in uniq_coffees_for_sale:
         name, description, notes, region, status, size, product_url = [""] * 7
@@ -63,7 +64,11 @@ def scrape_intelli():
                 logging.warning("Query for coffee name:{}, roaster:{}, region:{} returned {} results. Results are {}".format(coffee_data['name'], coffee_data['roaster'], coffee_data['region'], len(old_coffees), old_coffees))
             for key, value in coffee_data.iteritems():
                 setattr(old_coffees[0], key,value)
-            old_coffees[0].put()
+            try:
+                old_coffees[0].put()
+                coffees_updated += 1
+            except:
+                error_coffees.append(coffee_data['product_page'])
         else:
             coffee=Coffee(**coffee_data)
             try:
@@ -72,6 +77,7 @@ def scrape_intelli():
             except:
                 error_coffees.append(coffee_data['product_page'])
 
-    logging.info('Intelligentsia Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Intelligentsia New Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Intelligentsia Updated Results:{} / {}'.format(coffees_updated, total_coffees))
     logging.info('Error coffees are: ')
     logging.info(error_coffees)
