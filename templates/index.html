@@ -7,34 +7,90 @@
   <title>tellmeabout.coffee</title>
   <meta name="description" content="tells you about coffee">
   <meta name="author" content="jieb">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
 </head>
 
 <body>
 
-<h2>Coffees</h2>
+<!-- Following Menu -->
+<div class="ui menu">
+  <div class="ui container">
+    <a class="active item">Tell Me About Coffee</a>
+    <div class="ui dropdown item">
+      Roasters
+      <div class="menu">
+        <div class="item">Roaster #1</div>
+        <div class="item">Roaster #2</div>
+      </div>
+    </div>
+    <!-- <div class="right menu">
+      <div class="item">
+        <input type="text" placeholder="Search...">
+        <button class="ui button">Search</button>
+      </div>
+    </div> -->
+  </div>
+</div>
 
-<table>
-    <tr>
-        <td>Name</td>
-        <td>Roaster</td>
-        <td>Description</td>
-        <td>Tasting Notes</td>
-        <td>Date Added</td>
-        <td>Date Removed</td>
-    </tr>
+<div class="ui container">
+  <div class="ui fluid action input">
+    <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
+    <div class="ui button">Search</div>
+  </div>
+</div>
+
+<div class="ui container">
+  {% for coffee in coffees %}
+  <div class="ui relaxed divided items">
+    <div class="item">
+      <div class="ui small image">
+      <img src="/coffee.png">
+    </div>
+    <div class="content">
+      <a class="header">{{ coffee.name }}</a>
+      <div class="meta">
+        <a>{{ coffee.roaster }}</a>
+        <a>{{ coffee.date_added }}</a>
+      </div>
+      <div class="description">
+        {{ coffee.description }}
+      </div>
+      <div class="extra">
+        <div class="ui label">{{ coffee.notes }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+  
+
+<!-- <table class="ui celled padded table">
+    <thead>
+        <tr><th class="single line">Roaster</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Tasting Notes</th>
+        <th>Date Added</th>
+        <th>Date Removed</th>
+    </tr></thead>
     {% for coffee in coffees %}
+    <tbody>
         <tr>
-            <td>{{ coffee.name }}</td>
-            <td>{{ coffee.roaster }}</td>
+            <td>
+              <h3 class="ui center aligned header">{{ coffee.roaster }}</h3>
+            </td>
+            <td class = "single line">{{ coffee.name }}</td>
             <td>{{ coffee.description }}</td>
             <td>{{ coffee.notes }}</td>
             <td>{{ coffee.date_added }}</td>
             <td>{{ coffee.date_removed }}</td>
         </tr>
     {% endfor %}
-</table>
+    </tbody>
+</table> -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
 
 </body>
 </html>
