@@ -23,9 +23,7 @@ def index():
 def get_coffee_image(coffee_id):
     """Gets the image attached to the coffee"""
     coffee_int_id = int(coffee_id)
-    logging.info("hasfhjaks {}".format(coffee_int_id))
     coffee = Coffee.get_by_id(coffee_int_id)
-    logging.info("this is coffee".format(coffee.key))
     if coffee:
         if coffee.image:
             return send_file(io.BytesIO(coffee.image))
