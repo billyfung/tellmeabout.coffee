@@ -1,5 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_file
 from google.appengine.ext import ndb
+from google.appengine.api import images
+import io
 from models import Coffee
 from scrapers.intelli import scrape_intelli
 from scrapers.stumptown import scrape_stumptown
@@ -16,6 +18,16 @@ def index():
     """Lists the coffeez"""
     coffees = Coffee.query().fetch()
     return render_template('index.html', coffees=coffees)
+
+@app.route('/images/coffee/<int:coffee_id>')
+def get_coffee_image(coffee_id):
+    """Gets the image attached to the coffee"""
+    coffee_int_id = int(coffee_id)
+    coffee = Coffee.get_by_id(coffee_int_id)
+    if coffee:
+        if coffee.image:
+            return send_file(io.BytesIO(coffee.image))
+    return app.send_static_file('coffee.png')
 
 
 @app.errorhandler(404)

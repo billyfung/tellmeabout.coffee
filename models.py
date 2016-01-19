@@ -12,3 +12,4 @@ class Coffee(ndb.Model):
     status = ndb.StringProperty()
     product_page = ndb.StringProperty()
     size = ndb.StringProperty()
+    image = ndb.BlobProperty(default=None)

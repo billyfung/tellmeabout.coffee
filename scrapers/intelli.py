@@ -10,7 +10,7 @@ def scrape_intelli():
     roaster = 'Intelligentsia'
     intelli = 'http://www.intelligentsiacoffee.com/products/coffee'
     r = requests.get(intelli)
-    soup = BeautifulSoup(r.content)
+    soup = BeautifulSoup(r.content, "html.parser")
 
     # each coffee under class="grid_4 node node-type-product-coffee node-teaser build-mode-teaser""
     coffees_for_sale = soup.find_all('div', {'class': 'node-type-product-coffee'})
@@ -23,11 +23,13 @@ def scrape_intelli():
             seen.add(x)
     total_coffees = len(uniq_coffees_for_sale)
     coffees_entered = 0
+    coffees_updated = 0
     error_coffees = []
     for item in uniq_coffees_for_sale:
         name, description, notes, region, status, size, product_url = [""] * 7
         price = int()
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
+        logging.info("Getting url: {}".format(product_url))
         notes_list = item.p.contents
         notes = '{}, {}, {}'.format(notes_list[2].strip(), notes_list[4].strip(), notes_list[6].strip())
         name = item.find('div', {'class': 'productListingDescBox'}).strong.string
@@ -52,15 +54,21 @@ def scrape_intelli():
             if 'Blend' in blend_or_origin:
                 region = 'Blend'
             pass
+        image_url = coffee_soup.find('div', {'class': 'productPhotoSlide'}).find('img')['src']
+        image_blob = requests.get(image_url).content
         description = coffee_soup.find('div', {'class': 'product-body'}).string
-        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size}
+        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size, 'image': image_blob}
         old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
         if old_coffees:
             if len(old_coffees)>1:
                 logging.warning("Query for coffee name:{}, roaster:{}, region:{} returned {} results. Results are {}".format(coffee_data['name'], coffee_data['roaster'], coffee_data['region'], len(old_coffees), old_coffees))
             for key, value in coffee_data.iteritems():
                 setattr(old_coffees[0], key,value)
-            old_coffees[0].put
+            try:
+                old_coffees[0].put()
+                coffees_updated += 1
+            except:
+                error_coffees.append(coffee_data['product_page'])
         else:
             coffee=Coffee(**coffee_data)
             try:
@@ -69,6 +77,7 @@ def scrape_intelli():
             except:
                 error_coffees.append(coffee_data['product_page'])
 
-    logging.info('Intelligentsia Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Intelligentsia New Results:{} / {}'.format(coffees_entered, total_coffees))
+    logging.info('Intelligentsia Updated Results:{} / {}'.format(coffees_updated, total_coffees))
     logging.info('Error coffees are: ')
     logging.info(error_coffees)
