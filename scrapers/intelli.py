@@ -26,7 +26,7 @@ def scrape_intelli():
     coffees_updated = 0
     error_coffees = []
     for item in uniq_coffees_for_sale:
-        name, description, notes, region, status, size, product_url = [""] * 7
+        name, description, notes, region, active, size, product_url = [""] * 7
         price = int()
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
         logging.info("Getting url: {}".format(product_url))
@@ -39,10 +39,11 @@ def scrape_intelli():
             price = float(coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:])
             # size gives value + unit
             size = coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.next_sibling.strip()[2:]
-            status = "Available"
+            active = True
         except:
             # if 'OUT' in coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).string:
-            status = 'Sold Out'
+            # its sold out
+            active = False
             pass
         blend_or_origin = coffee_soup.find_all('p', {'class': 'coffeeDetailExtraInfoHeader'})
         blend_or_origin = [x.string for x in blend_or_origin]
@@ -57,7 +58,7 @@ def scrape_intelli():
         image_url = coffee_soup.find('div', {'class': 'productPhotoSlide'}).find('img')['src']
         image_blob = requests.get(image_url).content
         description = coffee_soup.find('div', {'class': 'product-body'}).string
-        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size, 'image': image_blob}
+        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_blob}
         old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
         if old_coffees:
             if len(old_coffees)>1:
