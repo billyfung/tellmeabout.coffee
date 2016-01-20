@@ -10,7 +10,7 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
-- url: /cronjob
+- url: /cron/.*
   script: main.app
   login: admin
 
