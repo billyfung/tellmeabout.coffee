@@ -53,9 +53,9 @@ def scrape_victrola():
         else:
             # sometimes tasting notes just alone
             try:
-                notes = coffee_soup(text=re.compile('Flavor:'))[1].string.strip()[8:].rstrip(',').split(',')
+                notes = coffee_soup(text=re.compile('Flavor:'))[1].string.strip()[8:].rstrip(',').lower().split(',')
             except:
-                notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').split(',')
+                notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').lower().split(',')
                 pass
             try:
                 region = coffee_soup(text=re.compile(r'Region:'))[1][8:]

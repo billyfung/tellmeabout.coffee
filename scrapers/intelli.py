@@ -31,7 +31,7 @@ def scrape_intelli():
         product_url = 'http://www.intelligentsiacoffee.com' + item.a['href']
         logging.info("Getting url: {}".format(product_url))
         notes_list = item.p.contents
-        notes = [notes_list[2].strip(),notes_list[4].strip(),notes_list[6].strip()]
+        notes = [notes_list[2].strip().lower(),notes_list[4].strip().lower(),notes_list[6].strip().lower()]
         name = item.find('div', {'class': 'productListingDescBox'}).strong.string
         r = requests.get(product_url)
         coffee_soup = BeautifulSoup(r.content)
