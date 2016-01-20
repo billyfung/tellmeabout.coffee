@@ -63,7 +63,7 @@ def cron_update():
             coffee.active = False
             coffee.date_removed = datetime.datetime.now()
             coffee.put()
-            logging.degug('Coffee {} was marked inactive'.format(coffee.name))
+            logging.info('Coffee {} was marked inactive'.format(coffee.name))
             inactive_coffees += 1
     logging.info("{} coffees were newly marked inactive".format(inactive_coffees))
     return "Finished checking active coffees"
