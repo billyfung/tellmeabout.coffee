@@ -21,7 +21,7 @@ def scrape_stumptown():
     for items in coffees_for_sale:
         url = items['href']
         if not 'trio' in url:
-            name,price,description,notes,region,status,size = [""]*7
+            name,price,description,notes,region,active,size = [""]*7
             product_url = 'https://www.stumptowncoffee.com'+url
             logging.info("Getting url: {}".format(url))
             r = requests.get(product_url)
@@ -45,9 +45,10 @@ def scrape_stumptown():
                 pass
 
             if coffee_soup.h6:
-                status = 'Sold Out'
+                # its sold out
+                active = False
             else:
-                status = 'Available'
+                active = True
 
             # size in ounces
             try:
@@ -56,7 +57,7 @@ def scrape_stumptown():
                 logging.warn("Error while getting size for {} : {}".format(name, e))
             image_url = coffee_soup.select('div.product._image')[0].find('span')['data-src']
             image_content = requests.get(image_url).content
-            coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'status': status, 'product_page': product_url, 'size': size, 'image': image_content}
+            coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': product_url, 'size': size, 'image': image_content}
             old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster == coffee_data['roaster'], Coffee.region == coffee_data['region']).fetch()
             if old_coffees:
                 if len(old_coffees) > 1:

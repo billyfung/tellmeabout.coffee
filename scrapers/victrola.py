@@ -19,7 +19,7 @@ def scrape_victrola():
     coffees_updated = 0
     error_coffees = []
     for item in coffees_for_sale:
-        name,description,notes,region,status,size, product_url = [""]*7
+        name,description,notes,region,active,size, product_url = [""]*7
         price = int()
         url = item['href']
         product_url = 'http://www.victrolacoffee.com' + url
@@ -40,9 +40,10 @@ def scrape_victrola():
             continue
         try:
             price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
-            status = 'Available'
+            active = True
         except:
-            status = "Sold Out"
+            # its sold out
+            active = False
         d = coffee_soup.find(itemprop='description').find_all('span')
         if 'Blend' in name:
             # different stuff for blends
@@ -64,7 +65,7 @@ def scrape_victrola():
                 pass
         image_url = coffee_soup.find('ul', {'class': 'bx-slider'}).find('img')['src']
         image_content = requests.get("http:{}".format(image_url)).content
-        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'status':status, 'product_page':product_url, 'size':size, 'image': image_content}
+        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}
         old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
         # check if coffee already in db
         if old_coffees:

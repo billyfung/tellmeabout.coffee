@@ -1,4 +1,8 @@
 cron:
 - description: scrape coffee sites (currently intelligensia, victrola, stumptown in that order)
-  url: /cronjob
-  schedule: every 48 hours
+  url: /cron/scrape_all
+  schedule: every 48 hours from 00:00 to 01:00
+
+- description: check active coffees and mark as inactive
+  url: /cron/check_active_coffees
+  schedule: every 48 hours from 01:00 to 02:00
