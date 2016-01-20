@@ -7,7 +7,7 @@ class Coffee(ndb.Model):
     date_added = ndb.DateTimeProperty(auto_now_add=True)
     date_removed = ndb.DateTimeProperty()
     price = ndb.FloatProperty()
-    notes = ndb.StringProperty()
+    notes = ndb.StringProperty(repeated=True)
     region = ndb.StringProperty()
     status = ndb.StringProperty()
     product_page = ndb.StringProperty()
