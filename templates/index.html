@@ -32,13 +32,17 @@
   </div>
 </div>
 
+<div class="ui grid">
+<div class="sixteen wide column">
 <div class="ui container">
   <div class="ui fluid action input">
     <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
     <div class="ui button">Search</div>
   </div>
 </div>
+</div>
 
+<div class="sixteen wide column">
 <div class="ui container">
   {% for coffee in coffees %}
   <div class="ui relaxed divided items">
@@ -56,11 +60,15 @@
         {{ coffee.description }}
       </div>
       <div class="extra">
-        <div class="ui label">{{ coffee.notes }}</div>
+      {% for note in coffee.notes.replace('&', ',').split(',') %}
+        <div class="ui label">{{ note.strip() }}</div>
+      {% endfor %}
       </div>
     </div>
   </div>
   {% endfor %}
+</div>
+</div>
 </div>
   
 
