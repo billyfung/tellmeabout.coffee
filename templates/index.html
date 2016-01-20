@@ -56,7 +56,9 @@
         {{ coffee.description }}
       </div>
       <div class="extra">
-        <div class="ui label">{{ coffee.notes }}</div>
+      {% for note in coffee.notes %}
+        <div class="ui label">{{ note }}</div>
+      {% endfor %}
       </div>
     </div>
   </div>

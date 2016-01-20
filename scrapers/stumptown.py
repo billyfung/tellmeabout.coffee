@@ -35,7 +35,7 @@ def scrape_stumptown():
             # div class="product _description
             description = coffee_soup.find('div', {'class':'product _description'}).p.string
             try:
-                notes = coffee_soup.h3.string
+                notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
             except:
                 pass
 
