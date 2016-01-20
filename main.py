@@ -3,9 +3,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import images
 import io
 from models import Coffee
-from scrapers.intelli import scrape_intelli
-from scrapers.stumptown import scrape_stumptown
-from scrapers.victrola import scrape_victrola
+import scrapers
 import logging
 
 
@@ -44,9 +42,9 @@ def application_error(e):
 @app.route('/cronjob')
 def cron_scrape():
     try:
-        scrape_intelli()
-        scrape_victrola()
-        scrape_stumptown()
+        scrapers.scrape_intelli()
+        scrapers.scrape_victrola()
+        scrapers.scrape_stumptown()
     except Exception as e:
         logging.warning("Error: {}".format(e))
     return "Finished scraping"
