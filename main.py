@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, send_from_directory
 from google.appengine.ext import ndb
 from google.appengine.api import images
 import io
@@ -6,6 +6,7 @@ import datetime
 from models import Coffee
 import scrapers
 import logging
+import os
 
 
 app = Flask(__name__)
@@ -28,6 +29,10 @@ def get_coffee_image(coffee_id):
             return send_file(io.BytesIO(coffee.image))
     return app.send_static_file('coffee.png')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.errorhandler(404)
 def page_not_found(e):
