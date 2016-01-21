@@ -41,7 +41,7 @@ def scrape_victrola():
         try:
             price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
             active = True
-        except:
+        except AttributeError:
             # its sold out
             active = False
         d = coffee_soup.find(itemprop='description').find_all('span')
@@ -55,12 +55,12 @@ def scrape_victrola():
             # sometimes tasting notes just alone
             try:
                 notes = coffee_soup(text=re.compile('Flavor:'))[1].string.strip()[8:].rstrip(',').lower().split(',')
-            except:
+            except IndexError:
                 notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').lower().split(',')
                 pass
             try:
                 region = coffee_soup(text=re.compile(r'Region:'))[1][8:]
-            except:
+            except IndexError:
                 region = 'n/a'
                 pass
         image_url = coffee_soup.find('ul', {'class': 'bx-slider'}).find('img')['src']
