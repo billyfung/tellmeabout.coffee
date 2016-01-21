@@ -7,6 +7,7 @@ from scrapers.intelli import scrape_intelli
 from scrapers.stumptown import scrape_stumptown
 from scrapers.victrola import scrape_victrola
 import logging
+import os
 
 
 app = Flask(__name__)
