@@ -35,7 +35,7 @@ def scrape_victrola():
             continue
         try:
             size = coffee_soup.find('select').option.string[:4]
-        except:
+        except AttributeError:
             logging.info('Cannot find size for {}'.format(name))
             continue
         try:

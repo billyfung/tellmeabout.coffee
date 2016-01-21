@@ -36,13 +36,15 @@ def scrape_stumptown():
             description = coffee_soup.find('div', {'class':'product _description'}).p.string
             try:
                 notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
-            except:
-                pass
+            except AttributeError:
+                # no notes found
+                continue
 
             try:
                 region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
-            except:
-                pass
+            except AttributeError:
+                # no region found
+                continue
 
             if coffee_soup.h6:
                 # its sold out
