@@ -38,13 +38,13 @@ def scrape_stumptown():
                 notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
             except AttributeError:
                 # no notes found
-                continue
+                pass
 
             try:
                 region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
             except AttributeError:
                 # no region found
-                continue
+                pass
 
             if coffee_soup.h6:
                 # its sold out
