@@ -61,11 +61,11 @@
           </td>
           <td>
             <div class="content">
-              <h4 class="header no-sort">{{ coffee.name }}</h4>
-                <div class="meta">
+              <h4 class="header">{{ coffee.name }}</h4>
+                <div class="meta roaster">
                   <a>{{ coffee.roaster }}</a>
                 </div>
-              <div class="description no-sort">
+              <div class="description">
                 {{ coffee.description }}
               </div>
               <br>
@@ -88,10 +88,19 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
-<script src="{{ url_for('static', filename='jquery.tablesort.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.tablesorter.combined.min.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $('table').tablesort()
+    $('table').tablesorter({
+      headers: {
+        '.no-sort': {
+          sorter: false
+        }
+      },
+      textExtraction: {
+        1: function(node, table, cellIndex){ return $(node).find(".roaster").text(); }
+      }
+    })
   })
 </script>
 
