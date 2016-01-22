@@ -17,26 +17,14 @@
 <!-- Following Menu -->
 <div class="ui menu">
   <div class="ui container">
-    <a class="active item">Tell Me About Coffee</a>
-    <div class="ui dropdown item">
-      Roasters
-      <div class="menu">
-        <div class="item">Roaster #1</div>
-        <div class="item">Roaster #2</div>
-      </div>
-    </div>
-    <!-- <div class="right menu">
-      <div class="item">
-        <input type="text" placeholder="Search...">
-        <button class="ui button">Search</button>
-      </div>
-    </div> -->
+    <h2 class="active item">Tell Me About Coffee</h2>
   </div>
 </div>
 
+<div class="ui grid">
 <div class="sixteen wide column">
   <div class="ui container">
-    <div class="ui fluid action input">
+    <div class="ui fluid input">
       <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
     </div>
   </div>
@@ -64,7 +52,7 @@
             <div class="content">
               <h4 class="header">{{ coffee.name }}</h4>
                 <div class="meta roaster">
-                  <a>{{ coffee.roaster }}</a>
+                  <a href={{coffee.product_page}}>{{ coffee.roaster }}</a>
                 </div>
               <div class="description">
                 {{ coffee.description }}
@@ -85,6 +73,7 @@
       </tbody>
     </table>
   </div>
+</div>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
