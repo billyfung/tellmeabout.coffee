@@ -62,17 +62,17 @@
           </td>
           <td>
             <div class="content">
-              <h4 class="header cssChildRow">{{ coffee.name }}</h4>
+              <h4 class="header">{{ coffee.name }}</h4>
                 <div class="meta roaster">
                   <a>{{ coffee.roaster }}</a>
                 </div>
-              <div class="description cssChildRow">
+              <div class="description">
                 {{ coffee.description }}
               </div>
               <br>
               <div class="extra">
                 {% for note in coffee.notes %}
-                <div class="ui label cssChildRow">{{ note }}</div>
+                <div class="ui label">{{ note }}</div>
                 {% endfor %}
               </div>
             </div>
@@ -100,7 +100,7 @@
         }
       },
       textExtraction: {
-        1: function(node, table, cellIndex){ return $(node).find(".roaster").text(); }
+        1: function(node, table, cellIndex){ return $(node).find(".roaster").text() + $(node).find(".extra").text(); }
       },
       widgets: ["filter"],
       widgetOptions : {
