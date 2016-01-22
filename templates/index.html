@@ -37,8 +37,7 @@
 <div class="sixteen wide column">
   <div class="ui container">
     <div class="ui fluid action input">
-      <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
-      <div class="ui button">Search</div>
+      <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
     </div>
   </div>
 </div>
@@ -91,6 +90,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
 <script src="{{ url_for('static', filename='jquery.tablesorter.combined.min.js') }}"></script>
+<script src="{{ url_for('static', filename='widget-filter.min.js') }}"></script>
 <script>
   $(document).ready(function(){
     $('table').tablesorter({
@@ -100,7 +100,13 @@
         }
       },
       textExtraction: {
-        1: function(node, table, cellIndex){ return $(node).find(".roaster").text(); }
+        1: function(node, table, cellIndex){ return $(node).find(".roaster").text() + $(node).find(".extra").text(); }
+      },
+      widgets: ["filter"],
+      widgetOptions : {
+        filter_external : 'input.search',
+        filter_columnFilters: false,
+        filter_childRows   : true
       }
     })
   })
