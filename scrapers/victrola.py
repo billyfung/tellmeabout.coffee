@@ -44,13 +44,13 @@ def scrape_victrola():
         except:
             # its sold out
             active = False
-        d = coffee_soup.find(itemprop='description').find_all('span')
+        d = coffee_soup.find('h4', {'class':'mobile'}).next_siblings
         if 'Blend' in name:
             # different stuff for blends
             notes = []
             region = ''
             for x in d:
-                description += x.string
+                description += x.string.strip()
         else:
             # sometimes tasting notes just alone
             try:
