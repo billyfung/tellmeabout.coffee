@@ -8,6 +8,8 @@
   <meta name="description" content="tells you about coffee">
   <meta name="author" content="jieb">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='tablesort-modified.css') }}">
+
 </head>
 
 <body>
@@ -50,7 +52,7 @@
           <th>Roaster</th>
           <th>Region</th>
           <th class="one wide">Size</th>
-          <th>Price ($USD)</th>
+          <th class="two wide">Price ($USD)</th>
         </tr>
       </thead>
       <tbody>

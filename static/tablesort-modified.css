@@ -1,0 +1,27 @@
+ui.sortable.table.tablesorter-default .tablesorter-header {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+    background-position: center right;
+    background-repeat: no-repeat;
+    cursor: pointer;    
+    white-space: normal;
+    padding: 4px 20px 4px 4px;
+}
+.ui.sortable.table.tablesorter-default thead .headerSortUp,
+.ui.sortable.table.tablesorter-default thead .tablesorter-headerSortUp,
+.ui.sortable.table.tablesorter-default thead .tablesorter-headerAsc {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+.ui.sortable.table.tablesorter-default thead .headerSortDown,
+.ui.sortable.table.tablesorter-default thead .tablesorter-headerSortDown,
+.ui.sortable.table.tablesorter-default thead .tablesorter-headerDesc {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+.ui.sortable.table.tablesorter-default thead .sorter-false {
+    background-image: none;
+    cursor: default;
+    padding: 4px;
+}
