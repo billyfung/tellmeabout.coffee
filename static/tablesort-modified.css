@@ -25,3 +25,8 @@ ui.sortable.table.tablesorter-default .tablesorter-header {
     cursor: default;
     padding: 4px;
 }
+
+.ui.sortable.table.tablesorter-default thead th {
+    -webkit-transition: none;
+    transition: none;
+}
