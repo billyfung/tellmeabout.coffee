@@ -32,73 +32,68 @@
   </div>
 </div>
 
-<div class="ui grid">
 <div class="sixteen wide column">
-<div class="ui container">
-  <div class="ui fluid action input">
-    <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
-    <div class="ui button">Search</div>
+  <div class="ui container">
+    <div class="ui fluid action input">
+      <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
+      <div class="ui button">Search</div>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="sixteen wide column">
-<div class="ui container">
-  {% for coffee in coffees %}
-  <div class="ui relaxed divided items">
-    <div class="item">
-      <div class="ui small image">
-      <img src="/images/coffee/{{ coffee.key.id() }}">
-    </div>
-    <div class="content">
-      <a class="header">{{ coffee.name }}</a>
-      <div class="meta">
-        <a>{{ coffee.roaster }}</a>
-        <a>{{ coffee.date_added }}</a>
-      </div>
-      <div class="description">
-        {{ coffee.description }}
-      </div>
-      <div class="extra">
-      {% for note in coffee.notes %}
-        <div class="ui label">{{ note }}</div>
-      {% endfor %}
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-</div>
-</div>
-  
-
-<!-- <table class="ui celled padded table">
-    <thead>
-        <tr><th class="single line">Roaster</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Tasting Notes</th>
-        <th>Date Added</th>
-        <th>Date Removed</th>
-    </tr></thead>
-    {% for coffee in coffees %}
-    <tbody>
+  <div class="ui container">
+    <table class="ui sortable table">
+      <thead>
         <tr>
-            <td>
-              <h3 class="ui center aligned header">{{ coffee.roaster }}</h3>
-            </td>
-            <td class = "single line">{{ coffee.name }}</td>
-            <td>{{ coffee.description }}</td>
-            <td>{{ coffee.notes }}</td>
-            <td>{{ coffee.date_added }}</td>
-            <td>{{ coffee.date_removed }}</td>
+          <th class="no-sort"></th>
+          <th>Roaster</th>
+          <th>Region</th>
+          <th class="one wide">Size</th>
+          <th>Price ($USD)</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table> -->
+      </thead>
+      <tbody>
+        {% for coffee in coffees %}
+        <tr>
+          <td>
+            <img class="ui small image" src="/images/coffee/{{ coffee.key.id() }}">
+          </td>
+          <td>
+            <div class="content">
+              <h4 class="header no-sort">{{ coffee.name }}</h4>
+                <div class="meta">
+                  <a>{{ coffee.roaster }}</a>
+                </div>
+              <div class="description no-sort">
+                {{ coffee.description }}
+              </div>
+              <br>
+              <div class="extra">
+                {% for note in coffee.notes %}
+                <div class="ui label">{{ note }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          </td>
+          <td> {{ coffee.region}}</td>
+          <td> {{ coffee.size}}</td>
+          <td> {{ coffee.price}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+<script src="{{ url_for('static', filename='jquery.tablesort.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
+    $('table').tablesort()
+  })
+</script>
 
 </body>
 </html>
