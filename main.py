@@ -51,6 +51,7 @@ def cron_scrape():
         scrapers.scrape_intelli()
         scrapers.scrape_victrola()
         scrapers.scrape_stumptown()
+        scrapers.scrape_heart()
     except Exception as e:
         logging.warning("Error: {}".format(e))
     return "Finished scraping"
