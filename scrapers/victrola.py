@@ -66,7 +66,7 @@ def scrape_victrola():
         image_url = coffee_soup.find('ul', {'class': 'bx-slider'}).find('img')['src']
         image_content = requests.get("http:{}".format(image_url)).content
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}
-        old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region']).fetch()
+        old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region'], Coffee.active==True).fetch()
         # check if coffee already in db
         if old_coffees:
             if len(old_coffees)>1:
