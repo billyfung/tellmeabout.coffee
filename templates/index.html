@@ -3,12 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
 
   <title>tellmeabout.coffee</title>
   <meta name="description" content="tells you about coffee">
   <meta name="author" content="jieb">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='tablesort-modified.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -25,7 +27,7 @@
 <div class="sixteen wide column">
   <div class="ui container">
     <div class="ui fluid input">
-      <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
+      <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Noted">
     </div>
   </div>
 </div>
@@ -37,22 +39,26 @@
         <tr>
           <th class="no-sort"></th>
           <th>Roaster</th>
-          <th>Region</th>
-          <th class="one wide">Size</th>
-          <th class="two wide">Price ($USD)</th>
+          <th class="center aligned">Region</th>
+          <th class="one wide center aligned ">Size</th>
+          <th class="two wide center aligned">Price ($USD)</th>
         </tr>
       </thead>
       <tbody>
         {% for coffee in coffees %}
         <tr>
           <td>
+            <a href={{ coffee.product_page }} >
             <img class="ui small image" src="/images/coffee/{{ coffee.key.id() }}">
+            </a>
           </td>
           <td>
             <div class="content">
-              <h4 class="header">{{ coffee.name }}</h4>
+              <a href={{ coffee.product_page }} class="name">
+                {{ coffee.name }}
+              </a>
                 <div class="meta roaster">
-                  <a href={{coffee.product_page}}>{{ coffee.roaster }}</a>
+                  {{ coffee.roaster }}
                 </div>
               <div class="description">
                 {{ coffee.description }}
@@ -66,8 +72,8 @@
             </div>
           </td>
           <td> {{ coffee.region}}</td>
-          <td> {{ coffee.size}}</td>
-          <td> {{ coffee.price}}</td>
+          <td class="center aligned"> {{ coffee.size}}</td>
+          <td class="center aligned"> {{ coffee.price}}</td>
         </tr>
         {% endfor %}
       </tbody>
