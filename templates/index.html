@@ -39,8 +39,8 @@
         <tr>
           <th class="no-sort"></th>
           <th>Roaster</th>
-          <th>Region</th>
-          <th class="one wide">Size</th>
+          <th class="center aligned">Region</th>
+          <th class="one wide center aligned ">Size</th>
           <th class="two wide center aligned">Price ($USD)</th>
         </tr>
       </thead>
@@ -54,9 +54,11 @@
           </td>
           <td>
             <div class="content">
-              <h4 class="header">{{ coffee.name }}</h4>
+              <a href={{ coffee.product_page }} class="name">
+                {{ coffee.name }}
+              </a>
                 <div class="meta roaster">
-                  <a href={{coffee.product_page}}>{{ coffee.roaster }}</a>
+                  {{ coffee.roaster }}
                 </div>
               <div class="description">
                 {{ coffee.description }}
@@ -70,7 +72,7 @@
             </div>
           </td>
           <td> {{ coffee.region}}</td>
-          <td> {{ coffee.size}}</td>
+          <td class="center aligned"> {{ coffee.size}}</td>
           <td class="center aligned"> {{ coffee.price}}</td>
         </tr>
         {% endfor %}
