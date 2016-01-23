@@ -49,7 +49,7 @@
         <tr>
           <td>
             <a href={{ coffee.product_page }} >
-            <img class="ui small image" src="/images/coffee/{{ coffee.key.id() }}">
+            <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
             </a>
           </td>
           <td>
@@ -86,6 +86,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
 <script src="{{ url_for('static', filename='jquery.tablesorter.combined.min.js') }}"></script>
 <script src="{{ url_for('static', filename='widget-filter.min.js') }}"></script>
+<script src="{{ url_for('static', filename='widget-lazyload.min.js') }}"></script>
 <script>
   $(document).ready(function(){
     $('table').tablesorter({
@@ -97,12 +98,14 @@
       textExtraction: {
         1: function(node, table, cellIndex){ return $(node).find(".roaster").text() + $(node).find(".extra").text(); }
       },
-      widgets: ["filter"],
+      widgets: ["filter", "lazyload"],
       widgetOptions : {
         filter_external : 'input.search',
         filter_columnFilters: false,
         filter_childRows   : true
       }
+    }).bind('filterEnd', function(e, filter){
+      $('table').trigger( 'lazyloadUpdate' );
     })
   })
 </script>
