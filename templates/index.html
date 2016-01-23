@@ -48,13 +48,13 @@
         {% for coffee in coffees %}
         <tr>
           <td>
-            <a href={{ coffee.product_page }} >
+            <a href={{ coffee.product_page }} target="_blank">
             <img class="ui small image" src="/images/coffee/{{ coffee.key.id() }}">
             </a>
           </td>
           <td>
             <div class="content">
-              <a href={{ coffee.product_page }} class="name">
+              <a href={{ coffee.product_page }} class="name" target="_blank">
                 {{ coffee.name }}
               </a>
                 <div class="meta roaster">
