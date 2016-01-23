@@ -58,7 +58,7 @@ def scrape_stumptown():
             image_url = coffee_soup.select('div.product._image')[0].find('span')['data-src']
             image_content = requests.get(image_url).content
             coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': product_url, 'size': size, 'image': image_content}
-            old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster == coffee_data['roaster'], Coffee.region == coffee_data['region']).fetch()
+            old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster == coffee_data['roaster'], Coffee.region == coffee_data['region'], Coffee.active==True).fetch()
             if old_coffees:
                 if len(old_coffees) > 1:
                     logging.warning("Query for coffee name: {}, roaster: {}, region: {} returned {} results. Result are {}".format(coffee_data['name'], coffee_data['roaster'], coffee_data['region'], len(old_coffees), old_coffees))
