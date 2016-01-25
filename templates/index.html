@@ -104,7 +104,7 @@
         filter_columnFilters: false,
         filter_childRows   : true
       }
-    }).bind('filterEnd', function(e, filter){
+    }).bind('filterEnd sortEnd', function(e, filter){
       $('table').trigger( 'lazyloadUpdate' );
     })
   })
