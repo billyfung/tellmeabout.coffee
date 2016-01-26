@@ -49,8 +49,7 @@ def scrape_intelli():
         blend_or_origin = [x.string for x in blend_or_origin]
         # region + country
         try:
-            region = coffee_soup.find(text='Region').next_element.string + ', ' + coffee_soup.find(
-                text='Country').next_element.string
+            region = coffee_soup.find(text='Country').next_element.string 
         except:
             if 'Blend' in blend_or_origin:
                 region = 'Blend'

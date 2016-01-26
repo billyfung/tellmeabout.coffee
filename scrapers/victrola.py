@@ -1,18 +1,19 @@
 from bs4 import BeautifulSoup
-import requests
+from helpers import COUNTRY_DICT
 from models import Coffee
-import re
+import requests
 import logging
-
+import re
+import string
 # scraping Victrola roasters
 
 
 def scrape_victrola():
+    countrydict = COUNTRY_DICT
     roaster = 'Victrola'
     victrola = 'http://www.victrolacoffee.com/collections/all-coffee-offerings'
     r = requests.get(victrola)
     soup = BeautifulSoup(r.content, "html.parser")
-
     coffees_for_sale = soup.find_all('a', {'class':'product-link'})
     total_coffees = len(coffees_for_sale)
     coffees_entered = 0
@@ -48,7 +49,7 @@ def scrape_victrola():
         if 'Blend' in name:
             # different stuff for blends
             notes = []
-            region = ''
+            region = 'Blend'
             for x in d:
                 description += x.string.strip()
         else:
@@ -58,11 +59,12 @@ def scrape_victrola():
             except:
                 notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').lower().split(',')
                 pass
-            try:
-                region = coffee_soup(text=re.compile(r'Region:'))[1][8:]
-            except:
-                region = 'n/a'
-                pass
+            is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
+            if len(is_country_in_here) != 0:
+                region = string.capwords(is_country_in_here[0])
+                # continent = countrydict[region.lower()]
+            else:
+                region = ''
         image_url = coffee_soup.find('ul', {'class': 'bx-slider'}).find('img')['src']
         image_content = requests.get("http:{}".format(image_url)).content
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}

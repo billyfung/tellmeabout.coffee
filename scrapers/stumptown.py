@@ -1,14 +1,16 @@
 from bs4 import BeautifulSoup
-import requests
+from helpers import COUNTRY_DICT
 from models import Coffee
+import requests
 import logging
 import re
+import string
 
 # scraping stumptown
 def scrape_stumptown():
+    countrydict = COUNTRY_DICT
     roaster = 'Stumptown'
     stumptown = 'https://www.stumptowncoffee.com/coffee'
-
     r = requests.get(stumptown)
     soup = BeautifulSoup(r.content, "html.parser")
     # class="product-grid _link"
@@ -39,17 +41,17 @@ def scrape_stumptown():
             except:
                 pass
 
-            try:
-                region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
-            except:
-                pass
-
+            is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
+            if len(is_country_in_here) != 0:
+                region = string.capwords(is_country_in_here[0])
+                # continent = countrydict[region.lower()]
+            else:
+                region = 'Blend'
             if coffee_soup.h6:
                 # its sold out
                 active = False
             else:
                 active = True
-
             # size in ounces
             try:
                 size = '{} oz'.format(re.findall('\d+', coffee_soup.find('div', {'class':'product _specs'}).find_all('p')[1].string)[0])
