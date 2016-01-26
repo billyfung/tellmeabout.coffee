@@ -6,7 +6,7 @@ import logging
 # scraping Blue Bottle roasters
 
 def scrape_bluebottle():
-
+    countrylist = [u'Brazil', u'Vietnam', u'Colombia', u'Indonesia', u'Ethiopia', u'India', u'Mexico', u'Guatemala', u'Peru', u'Honduras', u'Uganda', u'Ivory Coast', u'Costa Rica', u'El Salvador', u'Nicaragua', u'Papua New Guinea', u'Ecuador', u'Thailand', u'Tanzania', u'Dominican Republic', u'Kenya', u'Venezuela', u'Cameroon', u'Philippines', u'Democratic Republic of the Congo', u'Burundi', u'Madagascar', u'Haiti', u'Rwanda', u'Guinea', u'Cuba', u'Togo', u'Bolivia', u'Zambia', u'Angola', u'Central African Republic', u'Panama', u'Zimbabwe', u'United States', u'Nigeria', u'Ghana', u'Jamaica', u'Sri Lanka', u'Malawi', u'Paraguay', u'Sierra Leone', u'Australia', u'Trinidad and Tobago', u'Nepal', u'Republic of the Congo', u'Equatorial Guinea', u'Gabon', u'Benin']
     roaster = 'Blue Bottle'
     bluebottle = 'https://bluebottlecoffee.com/store/coffee'
     r = requests.get(bluebottle)
@@ -44,7 +44,11 @@ def scrape_bluebottle():
                     region = ""
                 else:
                     # not sure how to grab just the country right now
-                    region = 'n/a'
+                    is_country_in_here = [x for x in countrylist if x in name]
+                    if len(is_country_in_here) != 0:
+                        region = is_country_in_here[0]
+                    else:
+                        region = 'n/a'
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content
