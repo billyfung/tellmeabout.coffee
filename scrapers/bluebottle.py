@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup
 from models import Coffee
-from helpers import COUNTRY_DICT, country_from_name
+from helpers import country_from_name
 import requests
 import logging
 
 # scraping Blue Bottle roasters
 
 def scrape_bluebottle():
-    countrydict = COUNTRY_DICT
     roaster = 'Blue Bottle'
     bluebottle = 'https://bluebottlecoffee.com/store/coffee'
     r = requests.get(bluebottle)
