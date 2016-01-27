@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from helpers import COUNTRY_DICT, country_from_name
+from helpers import country_from_name
 from models import Coffee
 import requests
 import logging
@@ -7,7 +7,6 @@ import re
 
 # scraping stumptown
 def scrape_stumptown():
-    countrydict = COUNTRY_DICT
     roaster = 'Stumptown'
     stumptown = 'https://www.stumptowncoffee.com/coffee'
     r = requests.get(stumptown)

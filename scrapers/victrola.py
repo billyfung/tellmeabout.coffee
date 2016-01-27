@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from helpers import COUNTRY_DICT, country_from_name
+from helpers import country_from_name
 from models import Coffee
 import requests
 import logging
@@ -8,7 +8,6 @@ import re
 
 
 def scrape_victrola():
-    countrydict = COUNTRY_DICT
     roaster = 'Victrola'
     victrola = 'http://www.victrolacoffee.com/collections/all-coffee-offerings'
     r = requests.get(victrola)

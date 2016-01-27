@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from helpers import COUNTRY_DICT, country_from_name
+from helpers import country_from_name
 from models import Coffee
 import requests
 import logging
@@ -7,7 +7,6 @@ import re
 
 # scraping heart
 def scrape_heart():
-    countrydict = COUNTRY_DICT
     roaster = 'Heart'
     heart_beans = 'http://www.heartroasters.com/collections/beans'
     heart_url = 'http://www.heartroasters.com'
