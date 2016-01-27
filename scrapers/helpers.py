@@ -5,7 +5,7 @@ COUNTRY_DICT = {u'japan': u'asia', u'chile': u'south america', u'azerbaijan': u'
 def country_from_name(name):
     countrydict = COUNTRY_DICT
     is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
-    region = 'n/a'
+    country = 'n/a'
     if is_country_in_here:
-        region = string.capwords(is_country_in_here[0])
-    return region
+        country = string.capwords(is_country_in_here[0])
+    return country

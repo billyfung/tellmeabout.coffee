@@ -33,18 +33,15 @@ def scrape_bluebottle():
             price = float(coffee_soup.find('span', {'class':'js-variant-price'}).string[1:])
             description = coffee_soup.find('p', {'class':'spec-overview'}).string
             notes = coffee_soup.p.string.lower().split(',')
-            try:
                 # only works for not single origin
-                region = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
+            region = country_from_name(name) 
+            try:
+                details = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
+                if country_from_name(details) != 'n/a':
+                    region = details
             except AttributeError:
-                # for single origin, region is in name [country][region]
-                # otherwise if espresso, no region
-                # grab only country for now
                 if 'Espresso' in name:
-                    region = ""
-                else:
-                    # not sure how to grab just the country right now
-                    region = country_from_name(name)   
+                    region = "n/a"        
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content
