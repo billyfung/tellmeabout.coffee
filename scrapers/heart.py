@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
-from helpers import COUNTRY_DICT
+from helpers import COUNTRY_DICT, country_from_name
 from models import Coffee
 import requests
 import logging
 import re
-import string
 
 # scraping heart
 def scrape_heart():
@@ -44,13 +43,8 @@ def scrape_heart():
         description = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).text.encode('utf-8').strip()
         notes = coffee_soup.find('p',{'class': 'small uppercase flavors'}).text.split(',')
         if not blend:
+            region = country_from_name(name)
             # region = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).p.text.replace(u'Location:\xa0', '').replace('Location:', '').encode('utf-8')
-            is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
-            if len(is_country_in_here) != 0:
-                region = string.capwords(is_country_in_here[0])
-                # continent = countrydict[region.lower()]
-            else:
-                region = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).p.text.replace(u'Location:\xa0', '').replace('Location:', '').encode('utf-8')
         image_url = "http:{}".format(coffee_soup.select('div.slide')[0].find('img')['src'])
         image_content = requests.get(image_url).content
         coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': url, 'size': size, 'image': image_content}

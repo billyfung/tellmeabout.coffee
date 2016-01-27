@@ -1,9 +1,8 @@
 from bs4 import BeautifulSoup
 from models import Coffee
-from helpers import COUNTRY_DICT
+from helpers import COUNTRY_DICT, country_from_name
 import requests
 import logging
-import string
 
 # scraping Blue Bottle roasters
 
@@ -46,13 +45,7 @@ def scrape_bluebottle():
                     region = ""
                 else:
                     # not sure how to grab just the country right now
-                    is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
-                    if len(is_country_in_here) != 0:
-                        region = string.capwords(is_country_in_here[0])
-                        # continent = countrydict[region.lower()]
-                    else:
-                        region = "n/a"
-                        
+                    region = country_from_name(name)   
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content

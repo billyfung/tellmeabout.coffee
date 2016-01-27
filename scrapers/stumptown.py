@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
-from helpers import COUNTRY_DICT
+from helpers import COUNTRY_DICT, country_from_name
 from models import Coffee
 import requests
 import logging
 import re
-import string
 
 # scraping stumptown
 def scrape_stumptown():
@@ -40,13 +39,7 @@ def scrape_stumptown():
                 notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
             except:
                 pass
-
-            is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
-            if len(is_country_in_here) != 0:
-                region = string.capwords(is_country_in_here[0])
-                # continent = countrydict[region.lower()]
-            else:
-                region = 'Blend'
+            region = country_from_name(name)
             if coffee_soup.h6:
                 # its sold out
                 active = False
