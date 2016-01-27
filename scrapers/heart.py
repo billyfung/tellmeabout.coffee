@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-import requests
+from helpers import country_from_name
 from models import Coffee
+import requests
 import logging
 import re
 
@@ -41,7 +42,8 @@ def scrape_heart():
         description = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).text.encode('utf-8').strip()
         notes = coffee_soup.find('p',{'class': 'small uppercase flavors'}).text.split(',')
         if not blend:
-            region = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).p.text.replace(u'Location:\xa0', '').replace('Location:', '').encode('utf-8')
+            region = country_from_name(name)
+            # region = coffee_soup.find('div', {'class':'tab-content small'}).find('div',{'id': 'tab1'}).p.text.replace(u'Location:\xa0', '').replace('Location:', '').encode('utf-8')
         image_url = "http:{}".format(coffee_soup.select('div.slide')[0].find('img')['src'])
         image_content = requests.get(image_url).content
         coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': url, 'size': size, 'image': image_content}

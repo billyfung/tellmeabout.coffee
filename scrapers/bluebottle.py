@@ -1,14 +1,12 @@
 from bs4 import BeautifulSoup
 from models import Coffee
-from helpers import COUNTRY_DICT
+from helpers import country_from_name
 import requests
 import logging
-import string
 
 # scraping Blue Bottle roasters
 
 def scrape_bluebottle():
-    countrydict = COUNTRY_DICT
     roaster = 'Blue Bottle'
     bluebottle = 'https://bluebottlecoffee.com/store/coffee'
     r = requests.get(bluebottle)
@@ -35,24 +33,15 @@ def scrape_bluebottle():
             price = float(coffee_soup.find('span', {'class':'js-variant-price'}).string[1:])
             description = coffee_soup.find('p', {'class':'spec-overview'}).string
             notes = coffee_soup.p.string.lower().split(',')
-            try:
                 # only works for not single origin
-                region = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
+            region = country_from_name(name) 
+            try:
+                details = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
+                if country_from_name(details) != 'n/a':
+                    region = details
             except AttributeError:
-                # for single origin, region is in name [country][region]
-                # otherwise if espresso, no region
-                # grab only country for now
                 if 'Espresso' in name:
-                    region = ""
-                else:
-                    # not sure how to grab just the country right now
-                    is_country_in_here = [x for x in countrydict.keys() if x in name.lower()]
-                    if len(is_country_in_here) != 0:
-                        region = string.capwords(is_country_in_here[0])
-                        # continent = countrydict[region.lower()]
-                    else:
-                        region = "n/a"
-                        
+                    region = "n/a"        
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content

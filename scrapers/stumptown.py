@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-import requests
+from helpers import country_from_name
 from models import Coffee
+import requests
 import logging
 import re
 
@@ -8,7 +9,6 @@ import re
 def scrape_stumptown():
     roaster = 'Stumptown'
     stumptown = 'https://www.stumptowncoffee.com/coffee'
-
     r = requests.get(stumptown)
     soup = BeautifulSoup(r.content, "html.parser")
     # class="product-grid _link"
@@ -38,18 +38,12 @@ def scrape_stumptown():
                 notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
             except:
                 pass
-
-            try:
-                region = coffee_soup.find_all('h4')[1].span.string.strip()[8:]
-            except:
-                pass
-
+            region = country_from_name(name)
             if coffee_soup.h6:
                 # its sold out
                 active = False
             else:
                 active = True
-
             # size in ounces
             try:
                 size = '{} oz'.format(re.findall('\d+', coffee_soup.find('div', {'class':'product _specs'}).find_all('p')[1].string)[0])
