@@ -1,6 +1,7 @@
 from flask import Flask, render_template, send_file, send_from_directory, redirect, url_for
 from google.appengine.ext import ndb
 from google.appengine.api import images
+from google.appengine.api.modules import modules
 import io
 import datetime
 from models import Coffee
@@ -73,3 +74,12 @@ def cron_update():
             inactive_coffees += 1
     logging.info("{} coffees were newly marked inactive".format(inactive_coffees))
     return "Finished checking active coffees"
+
+@app.route('/cron/stop_non_default_instances')
+def cron_stop_non_default_instances():
+    # core logic (inside a cron or other handler)
+    for m in modules.get_modules():
+        dv = modules.get_default_version(m)
+        for v in modules.get_versions(m):
+            if v != dv: modules.stop_version(m, v)
+    return "Success!"
