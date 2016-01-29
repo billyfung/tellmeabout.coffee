@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from models import Coffee
+from helpers import add_or_update_coffee
 from google.appengine.api import urlfetch
 import logging
 
@@ -34,7 +35,7 @@ def scrape_intelli():
         notes = [notes_list[2].strip().lower(),notes_list[4].strip().lower(),notes_list[6].strip().lower()]
         name = item.find('div', {'class': 'productListingDescBox'}).strong.string
         r = requests.get(product_url)
-        coffee_soup = BeautifulSoup(r.content)
+        coffee_soup = BeautifulSoup(r.content, "html.parser")
         try:
             price = float(coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.string[1:])
             # size gives value + unit
@@ -58,26 +59,9 @@ def scrape_intelli():
         image_blob = requests.get(image_url).content
         description = coffee_soup.find('div', {'class': 'product-body'}).string
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_blob}
-        old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster==coffee_data['roaster'], Coffee.region==coffee_data['region'], Coffee.active==True).fetch()
-        if old_coffees:
-            if len(old_coffees)>1:
-                logging.warning("Query for coffee name:{}, roaster:{}, region:{} returned {} results. Results are {}".format(coffee_data['name'], coffee_data['roaster'], coffee_data['region'], len(old_coffees), old_coffees))
-            for key, value in coffee_data.iteritems():
-                setattr(old_coffees[0], key,value)
-            try:
-                old_coffees[0].put()
-                coffees_updated += 1
-            except:
-                error_coffees.append(coffee_data['product_page'])
-        else:
-            coffee=Coffee(**coffee_data)
-            try:
-                coffee.put()
-                coffees_entered +=1
-            except:
-                error_coffees.append(coffee_data['product_page'])
+        coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_coffees)
 
     logging.info('Intelligentsia New Results:{} / {}'.format(coffees_entered, total_coffees))
     logging.info('Intelligentsia Updated Results:{} / {}'.format(coffees_updated, total_coffees))
-    logging.info('Error coffees are: ')
-    logging.info(error_coffees)
+    if error_coffees:
+        logging.warning('Intelligensia Error coffees are: {}'.format(error_coffees))

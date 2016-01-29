@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from helpers import country_from_name
+from helpers import country_from_name, add_or_update_coffee
 from models import Coffee
 import requests
 import logging
@@ -26,7 +26,7 @@ def scrape_heart():
         name,price,description,notes,region,active,size = [""] * 7
         logging.info("Getting url: {}".format(url))
         r = requests.get(url)
-        coffee_soup = BeautifulSoup(r.content)
+        coffee_soup = BeautifulSoup(r.content, "html.parser")
         blend = False
         active = True
         name = coffee_soup.h1.text.strip()
@@ -47,26 +47,9 @@ def scrape_heart():
         image_url = "http:{}".format(coffee_soup.select('div.slide')[0].find('img')['src'])
         image_content = requests.get(image_url).content
         coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': url, 'size': size, 'image': image_content}
-        old_coffees = Coffee.query(Coffee.name == coffee_data['name'], Coffee.roaster == coffee_data['roaster'], Coffee.region == coffee_data['region'], Coffee.active==True).fetch()
-        if old_coffees:
-            if len(old_coffees) > 1:
-                logging.warning("Query for coffee name: {}, roaster: {}, region: {} returned {} results. Result are {}".format(coffee_data['name'], coffee_data['roaster'], coffee_data['region'], len(old_coffees), old_coffees))
-            for key, value in coffee_data.iteritems():
-                setattr(old_coffees[0], key, value)
-            try: 
-                old_coffees[0].put()
-                coffees_updated +=1
-            except:
-                error_coffees.append(coffee_data['product_page'])
-        else: 
-            coffee=Coffee(**coffee_data)
-            try:
-                coffee.put()
-                coffees_entered +=1
-            except:
-                error_coffees.append(coffee_data['product_page'])
+        coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_coffees)
 
     logging.info('Heart New Results:{} / {}'.format(coffees_entered, total_coffees))
     logging.info('Heart Updated Results:{} / {}'.format(coffees_updated, total_coffees))
-    logging.info('Error coffees are: ')
-    logging.info(error_coffees)
+    if error_coffees:
+        logging.warning('Heart Error coffees are: {}'.format(error_coffees))
