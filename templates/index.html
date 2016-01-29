@@ -11,19 +11,16 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='tablesort-modified.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 
 <body>
-
-<!-- Following Menu -->
 <div class="ui menu">
   <div class="ui container">
     <h2 class="active item">Tell Me About Coffee</h2>
   </div>
 </div>
 
-<div class="ui grid container">
+<div class="ui grid stackable container">
     <div class="twelve wide column">
         <div class="ui fluid input">
           <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
@@ -97,7 +94,7 @@
 <script src="{{ url_for('static', filename='widget-lazyload.min.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $table = $('table').tablesorter({
+    var $table = $('table').tablesorter({
       headers: {
         '.no-sort': {
           sorter: false
@@ -115,18 +112,22 @@
       debug: true
     }).bind('filterEnd sortEnd', function(e, filter){
       $('table').trigger( 'lazyloadUpdate' );
-    })
+    });
+
+    var filter = [];
+    $('.ui.dropdown')
+      .dropdown({
+        onChange: function(value, text, $selectedItem) {
+          filter[1] = value;
+          filter[ $table[0].config.columns ] = $('input.search').val();
+          $table.trigger('search', [ filter ]);
+        }
+      });
+    $("input.search").bind('keyup', function (e) {
+      filter[ $table[0].config.columns ] = $(this).val();
+      $table.trigger('search', [ filter ]);
+    });
   });
-  var filter = [];
-  $('.ui.dropdown')
-    .dropdown({
-      onChange: function(value, text, $selectedItem) {
-        filter[1] = value;
-        filter[ $table[0].config.columns ] = $('input.search').val();
-        $table.trigger('search', [filter]);
-      }
-    })
-  ;
 </script>
 
 </body>
