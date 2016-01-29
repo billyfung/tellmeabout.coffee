@@ -17,7 +17,9 @@ app = Flask(__name__)
 def index():
     """Lists the coffeez"""
     coffees = Coffee.query(Coffee.active==True).fetch()
-    return render_template('index.html', coffees=coffees)
+    roaster_query = Coffee.query(projection=["roaster"], distinct=True)
+    roasters = [data.roaster for data in roaster_query]
+    return render_template('index.html', coffees=coffees, roasters=roasters)
 
 @app.route('/images/coffee/<int:coffee_id>')
 def get_coffee_image(coffee_id):
