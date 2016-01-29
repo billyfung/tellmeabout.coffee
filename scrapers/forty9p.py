@@ -15,7 +15,7 @@ def scrape_49p():
     coffees_entered = 0
     coffees_updated = 0
     error_coffees = []
-    ignored = ['Subscriptions']
+    ignored = ['Subscription']
     for item in coffees_for_sale:
         name,description,notes,region,active,size, product_url = [""]*7
         price = float()
@@ -25,16 +25,14 @@ def scrape_49p():
         else:
             url = item.a['href']
             product_url = 'http://49thcoffee.com' + url
-            logging.info("Getting url: {}".format(url))
+            logging.info("Getting url: {}".format(product_url))
             r = requests.get(product_url)
             coffee_soup = BeautifulSoup(r.content)
-            details = coffee_soup.find('div', {'class':'single-product-details'})
-            try:
-                d = details.p
-                for sentence in d:
-                    description += sentence.string
-            except TypeError:
-                description = details.find('div', itemprop='description').p.string
+            #logging.info("Title: {}".format(coffee_soup.title))
+            details = coffee_soup.find('div', itemprop='description')
+            d = details.p
+            for sentence in d:
+                description += sentence.string
             notes = details.h3.string.lower()
             notes = notes.split(' // ')
             region = coffee_soup.find('li', {'class':'product-detail-country'}).string.split()[1]
