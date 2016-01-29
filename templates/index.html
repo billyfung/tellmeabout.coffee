@@ -11,75 +11,80 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='tablesort-modified.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 
 <body>
-
-<!-- Following Menu -->
 <div class="ui menu">
   <div class="ui container">
     <h2 class="active item">Tell Me About Coffee</h2>
   </div>
 </div>
 
-<div class="ui grid">
-<div class="sixteen wide column">
-  <div class="ui container">
-    <div class="ui fluid input">
-      <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Noted">
+<div class="ui grid stackable container">
+    <div class="twelve wide column">
+        <div class="ui fluid input">
+          <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
+        </div>
     </div>
-  </div>
-</div>
+    <div class="four wide column">
+      <div class="ui fluid selection dropdown">
+        <div class="text">Roaster</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div data class="item" data-value="">Roaster</div>
+          {% for roaster in roasters %}
+            <div data class="item" data-value="{{ roaster }}">{{ roaster }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
 
-<div class="sixteen wide column">
-  <div class="ui container">
-    <table class="ui sortable table">
-      <thead>
-        <tr>
-          <th class="no-sort"></th>
-          <th>Roaster</th>
-          <th class="center aligned">Region</th>
-          <th class="one wide center aligned ">Size</th>
-          <th class="two wide center aligned">Price ($USD)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for coffee in coffees %}
-        <tr>
-          <td>
-            <a href={{ coffee.product_page }} target="_blank">
-            <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
-            </a>
-          </td>
-          <td>
-            <div class="content">
-              <a href={{ coffee.product_page }} class="name" target="_blank">
-                {{ coffee.name }}
+  <div class="sixteen wide column">
+      <table class="ui sortable table">
+        <thead>
+          <tr>
+            <th class="no-sort"></th>
+            <th>Roaster</th>
+            <th class="center aligned">Region</th>
+            <th class="one wide center aligned ">Size</th>
+            <th class="two wide center aligned">Price ($USD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for coffee in coffees %}
+          <tr>
+            <td>
+              <a href={{ coffee.product_page }} target="_blank">
+              <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
               </a>
-                <div class="meta roaster">
-                  {{ coffee.roaster }}
+            </td>
+            <td>
+              <div class="content">
+                <a href={{ coffee.product_page }} class="name" target="_blank">
+                  {{ coffee.name }}
+                </a>
+                  <div class="meta roaster">
+                    {{ coffee.roaster }}
+                  </div>
+                <div class="description">
+                  {{ coffee.description }}
                 </div>
-              <div class="description">
-                {{ coffee.description }}
+                <br>
+                <div class="extra">
+                  {% for note in coffee.notes %}
+                  <div class="ui label">{{ note }}</div>
+                  {% endfor %}
+                </div>
               </div>
-              <br>
-              <div class="extra">
-                {% for note in coffee.notes %}
-                <div class="ui label">{{ note }}</div>
-                {% endfor %}
-              </div>
-            </div>
-          </td>
-          <td> {{ coffee.region}}</td>
-          <td class="center aligned"> {{ coffee.size}}</td>
-          <td class="center aligned"> {{ coffee.price}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
+            </td>
+            <td> {{ coffee.region}}</td>
+            <td class="center aligned"> {{ coffee.size}}</td>
+            <td class="center aligned"> {{ coffee.price}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -89,7 +94,7 @@
 <script src="{{ url_for('static', filename='widget-lazyload.min.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $('table').tablesorter({
+    var $table = $('table').tablesorter({
       headers: {
         '.no-sort': {
           sorter: false
@@ -103,11 +108,26 @@
         filter_external : 'input.search',
         filter_columnFilters: false,
         filter_childRows   : true
-      }
+      },
+      debug: true
     }).bind('filterEnd sortEnd', function(e, filter){
       $('table').trigger( 'lazyloadUpdate' );
-    })
-  })
+    });
+
+    var filter = [];
+    $('.ui.dropdown')
+      .dropdown({
+        onChange: function(value, text, $selectedItem) {
+          filter[1] = value;
+          filter[ $table[0].config.columns ] = $('input.search').val();
+          $table.trigger('search', [ filter ]);
+        }
+      });
+    $("input.search").bind('keyup', function (e) {
+      filter[ $table[0].config.columns ] = $(this).val();
+      $table.trigger('search', [ filter ]);
+    });
+  });
 </script>
 
 </body>
