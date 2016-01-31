@@ -52,35 +52,35 @@
         </thead>
         <tbody>
           {% for coffee in coffees %}
-            <tr>
-              <td>
-                <a href={{ coffee.product_page }} target="_blank">
-                <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
+          <tr>
+            <td>
+              <a href={{ coffee.product_page }} target="_blank">
+              <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
+              </a>
+            </td>
+            <td>
+              <div class="content">
+                <a href={{ coffee.product_page }} class="name" target="_blank">
+                  {{ coffee.name }}
                 </a>
-              </td>
-              <td>
-                <div class="content">
-                  <a href={{ coffee.product_page }} class="name" target="_blank">
-                    {{ coffee.name }}
-                  </a>
-                    <div class="meta roaster">
-                      {{ coffee.roaster }}
-                    </div>
-                  <div class="description">
-                    {{ coffee.description }}
+                  <div class="meta roaster">
+                    {{ coffee.roaster }}
                   </div>
-                  <br>
-                  <div class="extra">
-                    {% for note in coffee.notes %}
-                    <div class="ui label">{{ note }}</div>
-                    {% endfor %}
-                  </div>
+                <div class="description">
+                  {{ coffee.description }}
                 </div>
-              </td>
-              <td> {{ coffee.region}}</td>
-              <td class="center aligned"> {{ coffee.size}}</td>
-              <td class="center aligned"> {{ coffee.price}}</td>
-            </tr>
+                <br>
+                <div class="extra">
+                  {% for note in coffee.notes %}
+                  <div class="ui label">{{ note }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </td>
+            <td> {{ coffee.region}}</td>
+            <td class="center aligned"> {{ coffee.size}}</td>
+            <td class="center aligned"> {{ coffee.price}}</td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
