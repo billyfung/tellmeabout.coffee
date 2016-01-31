@@ -70,6 +70,7 @@ def cron_scrape():
         scrapers.scrape_stumptown()
         scrapers.scrape_heart()
         scrapers.scrape_bluebottle()
+        memcache.flush_all()
     except Exception as e:
         logging.warning("Error: {}".format(e))
     return "Finished scraping"
@@ -88,7 +89,6 @@ def cron_update():
             logging.info('Coffee {} was marked inactive'.format(coffee.name))
             inactive_coffees += 1
     logging.info("{} coffees were newly marked inactive".format(inactive_coffees))
-    memcache.delete(ALL_COFFEES_KEY)
     return "Finished checking active coffees"
 
 @app.route('/cron/stop_non_default_instances')
