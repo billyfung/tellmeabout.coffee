@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_file, send_from_directory, redire
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 from google.appengine.api.modules import modules
+from google.appengine.ext.appstats import recording
 import io
 import datetime
 from models import Coffee
@@ -11,6 +12,7 @@ import os
 
 
 app = Flask(__name__)
+app.wsgi_app = recording.appstats_wsgi_middleware(app.wsgi_app)
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 ALL_COFFEES_KEY = "coffees"

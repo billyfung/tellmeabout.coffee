@@ -35,3 +35,6 @@ handlers:
 libraries:
 - name: ssl
   version: latest
+
+builtins:
+- appstats: on
