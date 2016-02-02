@@ -14,78 +14,87 @@
 </head>
 
 <body>
-<div class="ui menu">
-  <div class="ui container">
-    <h2 class="active item">Tell Me About Coffee</h2>
-  </div>
-</div>
-
-<div class="ui grid stackable container">
-    <div class="twelve wide column">
-        <div class="ui fluid input">
-          <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
-        </div>
+  <div class="ui menu">
+    <div class="ui container">
+      <h2 class="active item">Tell Me About Coffee</h2>
     </div>
-    <div class="four wide column">
-      <div class="ui fluid selection dropdown">
-        <div class="text">Roaster</div>
-        <i class="dropdown icon"></i>
-        <div class="menu">
-          <div data class="item" data-value="">Roaster</div>
-          {% for roaster in roasters %}
-            <div data class="item" data-value="{{ roaster }}">{{ roaster }}</div>
-          {% endfor %}
+  </div>
+
+  <div class="ui grid stackable container">
+      <div class="twelve wide column">
+          <div class="ui fluid input">
+            <input type="search" class="search" data-column="all" placeholder="Search for Roaster, Region, or Tasting Notes">
+          </div>
+      </div>
+      <div class="four wide column">
+        <div class="ui fluid selection dropdown">
+          <div class="text">Roaster</div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div data class="item" data-value="">Roaster</div>
+            {% for roaster in roasters %}
+              <div data class="item" data-value="{{ roaster }}">{{ roaster }}</div>
+            {% endfor %}
+          </div>
         </div>
       </div>
-    </div>
 
-  <div class="sixteen wide column">
-      <table class="ui sortable table">
-        <thead>
-          <tr>
-            <th class="no-sort"></th>
-            <th>Roaster</th>
-            <th class="center aligned">Region</th>
-            <th class="one wide center aligned ">Size</th>
-            <th class="two wide center aligned">Price ($USD)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for coffee in coffees %}
-          <tr>
-            <td>
-              <a href={{ coffee.product_page }} target="_blank">
-              <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
-              </a>
-            </td>
-            <td>
-              <div class="content">
-                <a href={{ coffee.product_page }} class="name" target="_blank">
-                  {{ coffee.name }}
+    <div class="sixteen wide column">
+        <table class="ui sortable table">
+          <thead>
+            <tr>
+              <th class="no-sort"></th>
+              <th>Roaster</th>
+              <th class="center aligned">Region</th>
+              <th class="one wide center aligned ">Size</th>
+              <th class="two wide center aligned">Price ($USD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for coffee in coffees %}
+            <tr>
+              <td>
+                <a href={{ coffee.product_page }} target="_blank">
+                <img class="ui small image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
                 </a>
-                  <div class="meta roaster">
-                    {{ coffee.roaster }}
+              </td>
+              <td>
+                <div class="content">
+                  <a href={{ coffee.product_page }} class="name" target="_blank">
+                    {{ coffee.name }}
+                  </a>
+                    <div class="meta roaster">
+                      {{ coffee.roaster }}
+                    </div>
+                  <div class="description">
+                    {{ coffee.description }}
                   </div>
-                <div class="description">
-                  {{ coffee.description }}
+                  <br>
+                  <div class="extra">
+                    {% for note in coffee.notes %}
+                    <div class="ui label">{{ note }}</div>
+                    {% endfor %}
+                  </div>
                 </div>
-                <br>
-                <div class="extra">
-                  {% for note in coffee.notes %}
-                  <div class="ui label">{{ note }}</div>
-                  {% endfor %}
-                </div>
-              </div>
-            </td>
-            <td> {{ coffee.region}}</td>
-            <td class="center aligned"> {{ coffee.size}}</td>
-            <td class="center aligned"> {{ coffee.price}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+              </td>
+              <td> {{ coffee.region}}</td>
+              <td class="center aligned"> {{ coffee.size}}</td>
+              <td class="center aligned"> {{ coffee.price}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+  <div class="ui inverted footer segment">
+    <div class="ui center aligned container">
+      <div class="ui horizontal inverted small divided link list">
+        <a class="item" href='billy@billyfung.com'>Contact</a>
+        <a class="item">By Billy and Jin</a>
+      </div>
     </div>
-</div>
+  </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
