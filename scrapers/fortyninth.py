@@ -5,7 +5,7 @@ import requests
 import logging
 
 
-def scrape_49p():
+def scrape_fortyninth():
     roaster = '49th Parallel'
     base_url = 'http://49thcoffee.com/collections/coffee'
     r = requests.get(base_url)
