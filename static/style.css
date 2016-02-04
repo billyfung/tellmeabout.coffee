@@ -18,7 +18,7 @@ footer.ui.footer {
     bottom: 0;
 }
 
-.ui.grid.stackable.container {
+.ui.grid.stackable.container table.ui.sortable.table.tablesorter {
     margin-bottom: 40px;
 }
 
