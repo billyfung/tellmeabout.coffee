@@ -47,17 +47,23 @@ def scrape_victrola():
         if 'Blend' in name:
             # different stuff for blends
             notes = []
-            region = 'Blend'
+            region = ''
             for x in d:
                 description += x.string.strip()
         else:
             # sometimes tasting notes just alone
-            try:
-                notes = coffee_soup(text=re.compile('Flavor:'))[1].string.strip()[8:].rstrip(',').lower().split(',')
-            except:
-                notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').lower().split(',')
-                pass
-            region = country_from_name(name)
+            # sometimes they are in 'Flavor'
+            # sometimes there are no tasting notes...
+            flavor = coffee_soup(text=re.compile('Flavor:'))
+            if flavor:
+                notes = flavor[1].string.strip()[8:].rstrip(',').lower().split(',')
+            else:
+                try:
+                    notes = coffee_soup.find(text="Tasting Notes").next_element.strip()[2:].rstrip(',').lower().split(',')
+                except AttributeError:
+                    # can't find any tasting notes
+                    notes = []
+                    logging.info('No tasting notes for {}'.format(product_url))
         image_url = coffee_soup.find('ul', {'class': 'bx-slider'}).find('img')['src']
         image_content = requests.get("http:{}".format(image_url)).content
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}
