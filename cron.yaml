@@ -1,5 +1,5 @@
 cron:
-- description: scrape coffee sites (currently intelligensia, victrola, stumptown, bluebottle in that order)
+- description: scrape coffee sites (currently intelligensia, victrola, stumptown, bluebottle, 49p in that order)
   url: /cron/scrape_all
   schedule: every 48 hours from 00:00 to 01:00
 
