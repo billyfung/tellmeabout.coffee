@@ -14,11 +14,11 @@
 </head>
 
 <body>
-  <header class="ui menu">
-    <div class="ui container">
-      <h2 class="active item">Tell Me About Coffee</h2>
-    </div>
-  </header>
+<div class="ui menu">
+  <div class="ui container">
+    <h2 class="active item">Tell Me About Coffee</h2>
+  </div>
+</div>
 
   <div class="ui grid stackable container">
       <div class="twelve wide column">
@@ -110,7 +110,7 @@
         }
       },
       textExtraction: {
-        1: function(node, table, cellIndex){ return $(node).find(".roaster").text() + $(node).find(".extra").text(); }
+        1: function(node, table, cellIndex){ return $(node).find(".extra").text(); }
       },
       widgets: ["filter", "lazyload"],
       widgetOptions : {

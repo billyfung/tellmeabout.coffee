@@ -37,11 +37,11 @@ def scrape_bluebottle():
             region = country_from_name(name) 
             try:
                 details = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
-                if country_from_name(details) != 'n/a':
+                if country_from_name(details) != '':
                     region = details
             except AttributeError:
                 if 'Espresso' in name:
-                    region = "n/a"        
+                    region = ""        
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content
