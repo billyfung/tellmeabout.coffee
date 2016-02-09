@@ -23,7 +23,7 @@
 <div class="ui grid stackable container">
     <div class="twelve wide column">
         <div class="ui fluid input">
-          <input type="search" class="search" data-column="all" placeholder="Search for Region, or Tasting Notes">
+          <input type="search" class="search" placeholder="Search for Region, or Tasting Notes">
         </div>
     </div>
     <div class="four wide column">
@@ -48,6 +48,7 @@
             <th class="center aligned">Region</th>
             <th class="one wide center aligned ">Size</th>
             <th class="two wide center aligned">Price ($USD)</th>
+            <th class="hidden">Roaster Name</th>
           </tr>
         </thead>
         <tbody>
@@ -77,9 +78,10 @@
                 </div>
               </div>
             </td>
-            <td> {{ coffee.region}}</td>
+            <td> {{ coffee.region }}</td>
             <td class="center aligned"> {{ coffee.size}}</td>
             <td class="center aligned"> {{ coffee.price}}</td>
+            <td class="hidden"> {{ coffee.roaster }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -118,13 +120,19 @@
     $('.ui.dropdown')
       .dropdown({
         onChange: function(value, text, $selectedItem) {
-          filter[1] = value;
+          // set the roaster dropdown to search on hidden roaster column
+          filter[5] = value;
           filter[ $table[0].config.columns ] = $('input.search').val();
           $table.trigger('search', [ filter ]);
         }
       });
     $("input.search").bind('keyup', function (e) {
-      filter[ $table[0].config.columns ] = $(this).val();
+      // search on every column except the hidden roaster
+      filter[ 1 ] = $(this).val();
+      filter[ 2 ] = $(this).val();
+      filter[ 3 ] = $(this).val();
+      filter[ 4 ] = $(this).val();
+      console.log(filter);
       $table.trigger('search', [ filter ]);
     });
   });
