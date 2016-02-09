@@ -48,7 +48,8 @@
             <th class="center aligned">Region</th>
             <th class="one wide center aligned ">Size</th>
             <th class="two wide center aligned">Price ($USD)</th>
-            <th class="hidden">Roaster Name</th>
+            <th class="hidden roaster-search">Roaster Name</th>
+            <th class="hidden search-data">Search Data</th>
           </tr>
         </thead>
         <tbody>
@@ -78,10 +79,11 @@
                 </div>
               </div>
             </td>
-            <td> {{ coffee.region }}</td>
-            <td class="center aligned"> {{ coffee.size}}</td>
-            <td class="center aligned"> {{ coffee.price}}</td>
-            <td class="hidden"> {{ coffee.roaster }}</td>
+            <td>{{ coffee.region }}</td>
+            <td class="center aligned">{{ coffee.size }}</td>
+            <td class="center aligned">{{ coffee.price }}</td>
+            <td class="hidden">{{ coffee.roaster }}</td>
+            <td class="hidden">{{ coffee.region }} {% for note in coffee.notes %}{{ note }} {% endfor %}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -107,11 +109,9 @@
       },
       widgets: ["filter", "lazyload"],
       widgetOptions : {
-        filter_external : 'input.search',
         filter_columnFilters: false,
         filter_childRows   : true
       },
-      debug: true
     }).bind('filterEnd sortEnd', function(e, filter){
       $('table').trigger( 'lazyloadUpdate' );
     });
@@ -121,18 +121,13 @@
       .dropdown({
         onChange: function(value, text, $selectedItem) {
           // set the roaster dropdown to search on hidden roaster column
-          filter[5] = value;
-          filter[ $table[0].config.columns ] = $('input.search').val();
+          filter[ 5 ] = value;
           $table.trigger('search', [ filter ]);
         }
       });
     $("input.search").bind('keyup', function (e) {
-      // search on every column except the hidden roaster
-      filter[ 1 ] = $(this).val();
-      filter[ 2 ] = $(this).val();
-      filter[ 3 ] = $(this).val();
-      filter[ 4 ] = $(this).val();
-      console.log(filter);
+      // search on hidden search column
+      filter[ 6 ] = $(this).val();
       $table.trigger('search', [ filter ]);
     });
   });
