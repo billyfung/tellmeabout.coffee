@@ -2,11 +2,11 @@
     background-color: #f9fafb;
 }
 
-.meta{
+.meta {
     font-style: italic;
 }
 
-.name{
+.name {
     font-size: 19px;
     line-height: 160%;
 }
@@ -17,19 +17,23 @@
     }
 }
 
-.description{
+.description {
     font-size: 15px;
     line-height: 145%;
 }
 
-.roaster{
+.roaster {
     font-size: 15px;
 }
 
-.region{
+.region {
     font-size: 15px;
 }
 
-.price{
+.price {
+    font-size: 15px;
+}
+
+.size {
     font-size: 15px;
 }
