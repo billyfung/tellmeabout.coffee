@@ -7,11 +7,29 @@
 }
 
 .name{
-    font-size: 18px;
+    font-size: 19px;
+    line-height: 160%;
 }
 
 @media only screen and (max-width: 767px) {
     .ui.sortable.table tr.filtered {
         display: none !important;
     }
+}
+
+.description{
+    font-size: 15px;
+    line-height: 145%;
+}
+
+.roaster{
+    font-size: 15px;
+}
+
+.region{
+    font-size: 15px;
+}
+
+.price{
+    font-size: 15px;
 }
