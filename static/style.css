@@ -2,12 +2,17 @@
     background-color: #f9fafb;
 }
 
-.meta{
+.meta {
     font-style: italic;
 }
 
-.name{
-    font-size: 18px;
+.name {
+    font-size: 19px;
+    line-height: 160%;
+}
+
+.hidden {
+    display: none;
 }
 
 footer.ui.footer {
@@ -26,4 +31,25 @@ footer.ui.footer {
     .ui.sortable.table tr.filtered {
         display: none !important;
     }
+}
+
+.description {
+    font-size: 15px;
+    line-height: 145%;
+}
+
+.roaster {
+    font-size: 15px;
+}
+
+.region {
+    font-size: 15px;
+}
+
+.price {
+    font-size: 15px;
+}
+
+.size {
+    font-size: 15px;
 }
