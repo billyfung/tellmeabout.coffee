@@ -53,3 +53,9 @@ footer.ui.footer {
 .size {
     font-size: 15px;
 }
+
+.ui.semismall.image {
+  width: 200px;
+  height: auto;
+  font-size: 0.92857143rem;
+}
