@@ -23,7 +23,7 @@
 <div class="ui grid stackable container">
     <div class="twelve wide column">
         <div class="ui fluid input">
-          <input type="search" class="search" data-column="all" placeholder="Search for Region, or Tasting Notes">
+          <input type="search" class="search" placeholder="Search for Region, or Tasting Notes">
         </div>
     </div>
     <div class="four wide column">
@@ -48,6 +48,8 @@
             <th class="center aligned">Region</th>
             <th class="one wide center aligned ">Size</th>
             <th class="two wide center aligned">Price ($USD)</th>
+            <th class="hidden roaster-search">Roaster Name</th>
+            <th class="hidden search-data">Search Data</th>
           </tr>
         </thead>
         <tbody>
@@ -77,9 +79,11 @@
                 </div>
               </div>
             </td>
-            <td class="center aligned region"> {{ coffee.region}}</td>
-            <td class="center aligned size"> {{ coffee.size}}</td>
-            <td class="center aligned price"> {{ coffee.price}}</td>
+            <td class="center aligned region">{{ coffee.region }}</td>
+            <td class="center aligned size">{{ coffee.size }}</td>
+            <td class="center aligned price">{{ coffee.price }}</td>
+            <td class="hidden">{{ coffee.roaster }}</td>
+            <td class="hidden">{{ coffee.region }} {% for note in coffee.notes %}{{ note }} {% endfor %}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -105,11 +109,9 @@
       },
       widgets: ["filter", "lazyload"],
       widgetOptions : {
-        filter_external : 'input.search',
         filter_columnFilters: false,
         filter_childRows   : true
       },
-      debug: true
     }).bind('filterEnd sortEnd', function(e, filter){
       $('table').trigger( 'lazyloadUpdate' );
     });
@@ -118,13 +120,14 @@
     $('.ui.dropdown')
       .dropdown({
         onChange: function(value, text, $selectedItem) {
-          filter[1] = value;
-          filter[ $table[0].config.columns ] = $('input.search').val();
+          // set the roaster dropdown to search on hidden roaster column
+          filter[ 5 ] = value;
           $table.trigger('search', [ filter ]);
         }
       });
     $("input.search").bind('keyup', function (e) {
-      filter[ $table[0].config.columns ] = $(this).val();
+      // search on hidden search column
+      filter[ 6 ] = $(this).val();
       $table.trigger('search', [ filter ]);
     });
   });
