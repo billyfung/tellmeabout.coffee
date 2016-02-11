@@ -54,13 +54,6 @@ footer.ui.footer {
     font-size: 15px;
 }
 
-.ui.input.focus input,
-.ui.input input:focus {
-  border-color: #85B7D9;
-  background: #FFFFFF;
-  color: rgba(0, 0, 0, 0.8);
-  box-shadow: none;
-}
 .ui.input.focus input::-webkit-input-placeholder,
 .ui.input input:focus::-webkit-input-placeholder {
   color: rgba(128, 128, 128, 1);
