@@ -54,6 +54,19 @@ footer.ui.footer {
     font-size: 15px;
 }
 
+.ui.input.focus input::-webkit-input-placeholder,
+.ui.input input:focus::-webkit-input-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+.ui.input.focus input::-moz-placeholder,
+.ui.input input:focus::-moz-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+.ui.input.focus input::-ms-input-placeholder,
+.ui.input input:focus::-ms-input-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+
 .ui.semismall.image {
   width: 200px;
   height: auto;
