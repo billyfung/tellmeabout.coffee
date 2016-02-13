@@ -54,6 +54,7 @@ footer.ui.footer {
     font-size: 15px;
 }
 
+<<<<<<< HEAD
 .ui.input.focus input::-webkit-input-placeholder,
 .ui.input input:focus::-webkit-input-placeholder {
   color: rgba(128, 128, 128, 1);
@@ -67,3 +68,10 @@ footer.ui.footer {
   color: rgba(128, 128, 128, 1);
 }
 
+=======
+.ui.semismall.image {
+  width: 200px;
+  height: auto;
+  font-size: 15px;
+}
+>>>>>>> master
