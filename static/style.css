@@ -88,3 +88,6 @@ table img {
   font-size: 15px;
 }
 
+footer .ui.inverted.list .item a:not(.ui):hover {
+  color: #000000 !important;
+}
