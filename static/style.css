@@ -12,7 +12,12 @@
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+table:not(.unstackable).ui tr>td.hidden,
+table:not(.unstackable).ui tr>th.hidden {
+    display: none !important;
 }
 
 footer.ui.footer {
@@ -27,9 +32,19 @@ footer.ui.footer {
     margin-bottom: 40px;
 }
 
+table img {
+  margin: auto;
+}
+
 @media only screen and (max-width: 767px) {
     .ui.sortable.table tr.filtered {
         display: none !important;
+    }
+    tbody {
+      text-align: center;
+    }
+    th {
+      text-align: center !important;
     }
 }
 
