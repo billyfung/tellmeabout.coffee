@@ -3,102 +3,156 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
 
   <title>tellmeabout.coffee</title>
   <meta name="description" content="tells you about coffee">
   <meta name="author" content="jieb">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='tablesort-modified.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-
-<!-- Following Menu -->
 <div class="ui menu">
   <div class="ui container">
-    <a class="active item">Tell Me About Coffee</a>
-    <div class="ui dropdown item">
-      Roasters
-      <div class="menu">
-        <div class="item">Roaster #1</div>
-        <div class="item">Roaster #2</div>
-      </div>
-    </div>
-    <!-- <div class="right menu">
-      <div class="item">
-        <input type="text" placeholder="Search...">
-        <button class="ui button">Search</button>
-      </div>
-    </div> -->
+    <h2 class="active item">Tell Me About Coffee</h2>
   </div>
 </div>
 
-<div class="ui grid">
-<div class="sixteen wide column">
-<div class="ui container">
-  <div class="ui fluid action input">
-    <input type ="text" placeholder="Search for Roaster, Region, or Tasting Notes">
-    <div class="ui button">Search</div>
-  </div>
-</div>
-</div>
-
-<div class="sixteen wide column">
-<div class="ui container">
-  {% for coffee in coffees %}
-  <div class="ui relaxed divided items">
-    <div class="item">
-      <div class="ui small image">
-      <img src="/images/coffee/{{ coffee.key.id() }}">
+<div class="ui grid stackable container">
+    <div class="twelve wide column">
+        <div class="ui fluid input">
+          <input type="search" class="search" placeholder="Search for Region, or Tasting Notes">
+        </div>
     </div>
-    <div class="content">
-      <a class="header">{{ coffee.name }}</a>
-      <div class="meta">
-        <a>{{ coffee.roaster }}</a>
-        <a>{{ coffee.date_added }}</a>
-      </div>
-      <div class="description">
-        {{ coffee.description }}
-      </div>
-      <div class="extra">
-      {% for note in coffee.notes %}
-        <div class="ui label">{{ note }}</div>
-      {% endfor %}
+    <div class="four wide column">
+      <div class="ui fluid selection dropdown">
+        <div class="text">Roaster</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div data class="item" data-value="">Roaster</div>
+          {% for roaster in roasters %}
+            <div data class="item" data-value="{{ roaster }}">{{ roaster }}</div>
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
-  {% endfor %}
-</div>
-</div>
-</div>
-  
 
-<!-- <table class="ui celled padded table">
-    <thead>
-        <tr><th class="single line">Roaster</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Tasting Notes</th>
-        <th>Date Added</th>
-        <th>Date Removed</th>
-    </tr></thead>
-    {% for coffee in coffees %}
-    <tbody>
-        <tr>
+  <div class="sixteen wide column">
+      <table class="ui sortable table">
+        <thead>
+          <tr>
+            <th class="no-sort"></th>
+            <th>Roaster</th>
+            <th class="center aligned">Region</th>
+            <th class="one wide center aligned ">Size</th>
+            <th class="two wide center aligned">Price ($USD)</th>
+            <th class="hidden roaster-search">Roaster Name</th>
+            <th class="hidden search-data">Search Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for coffee in coffees %}
+          <tr>
             <td>
-              <h3 class="ui center aligned header">{{ coffee.roaster }}</h3>
+              <a href={{ coffee.product_page }} target="_blank">
+              <img class="ui semismall image lazy" data-original="/images/coffee/{{ coffee.key.id() }}">
+              </a>
             </td>
-            <td class = "single line">{{ coffee.name }}</td>
-            <td>{{ coffee.description }}</td>
-            <td>{{ coffee.notes }}</td>
-            <td>{{ coffee.date_added }}</td>
-            <td>{{ coffee.date_removed }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table> -->
+            <td>
+              <div class="content">
+                <a href={{ coffee.product_page }} class="name" target="_blank">
+                  {{ coffee.name }}
+                </a>
+                  <div class="meta roaster">
+                    {{ coffee.roaster }}
+                  </div>
+                <div class="description">
+                  {{ coffee.description }}
+                </div>
+                <br>
+                <div class="extra">
+                  {% for note in coffee.notes %}
+                  <div class="ui label">{{ note }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </td>
+            <td class="center aligned region">{{ coffee.region }}</td>
+            <td class="center aligned size">{{ coffee.size }}</td>
+            <td class="center aligned price">{{ coffee.price }}</td>
+            <td class="hidden">{{ coffee.roaster }}</td>
+            <td class="hidden">{{ coffee.region }} {% for note in coffee.notes %}{{ note }} {% endfor %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+
+  <footer class="ui inverted grey footer segment">
+    <div class="ui center aligned container">
+      <div class="ui horizontal inverted small divided link list">
+        <div class="item"><a href='mailto:billy@billyfung.com?Subject=tellmeabout.coffee'>Contact</a>
+        </div>
+        <div class="item">By <a href='http://billyfung.com' target="_blank">Billy</a> and <a href='http://jinpark.net' target="_blank">Jin</a></div>
+      </div>
+    </div>
+  </footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+<script src="{{ url_for('static', filename='jquery.tablesorter.combined.min.js') }}"></script>
+<script src="{{ url_for('static', filename='widget-filter.min.js') }}"></script>
+<script src="{{ url_for('static', filename='widget-lazyload.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
+    var $table = $('table').tablesorter({
+      headers: {
+        '.no-sort': {
+          sorter: false
+        }
+      },
+      textExtraction: {
+        1: function(node, table, cellIndex){ return $(node).find(".extra").text(); }
+      },
+      widgets: ["filter", "lazyload"],
+      widgetOptions : {
+        filter_columnFilters: false,
+        filter_childRows   : true
+      },
+    }).bind('filterEnd sortEnd', function(e, filter){
+      $('table').trigger( 'lazyloadUpdate' );
+    });
+
+    var filter = [];
+    $('.ui.dropdown')
+      .dropdown({
+        onChange: function(value, text, $selectedItem) {
+          // set the roaster dropdown to search on hidden roaster column
+          filter[ 5 ] = value;
+          $table.trigger('search', [ filter ]);
+        }
+      });
+    $("input.search").bind('keyup', function (e) {
+      // search on hidden search column
+      filter[ 6 ] = $(this).val();
+      $table.trigger('search', [ filter ]);
+    });
+  });
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46759222-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 </body>
 </html>

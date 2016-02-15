@@ -1,0 +1,93 @@
+.ui.sortable.table thead th.no-sort:hover {
+    background-color: #f9fafb;
+}
+
+.meta {
+    font-style: italic;
+}
+
+.name {
+    font-size: 19px;
+    line-height: 160%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+table:not(.unstackable).ui tr>td.hidden,
+table:not(.unstackable).ui tr>th.hidden {
+    display: none !important;
+}
+
+footer.ui.footer {
+    margin-bottom: 0px;
+    position: fixed;
+    width: 100%;
+    min-height: 30px;
+    bottom: 0;
+}
+
+.ui.grid.stackable.container table.ui.sortable.table.tablesorter {
+    margin-bottom: 40px;
+}
+
+table img {
+  margin: auto;
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.sortable.table tr.filtered {
+        display: none !important;
+    }
+    tbody {
+      text-align: center;
+    }
+    th {
+      text-align: center !important;
+    }
+}
+
+.description {
+    font-size: 15px;
+    line-height: 145%;
+}
+
+.roaster {
+    font-size: 15px;
+}
+
+.region {
+    font-size: 15px;
+}
+
+.price {
+    font-size: 15px;
+}
+
+.size {
+    font-size: 15px;
+}
+
+.ui.input.focus input::-webkit-input-placeholder,
+.ui.input input:focus::-webkit-input-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+.ui.input.focus input::-moz-placeholder,
+.ui.input input:focus::-moz-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+.ui.input.focus input::-ms-input-placeholder,
+.ui.input input:focus::-ms-input-placeholder {
+  color: rgba(128, 128, 128, 1);
+}
+
+.ui.semismall.image {
+  width: 200px;
+  height: auto;
+  font-size: 15px;
+}
+
+footer .ui.inverted.list .item a:not(.ui):hover {
+  color: #000000 !important;
+}
