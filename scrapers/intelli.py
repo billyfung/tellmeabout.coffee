@@ -52,7 +52,8 @@ def scrape_intelli():
         # region + country
         try:
             region = coffee_soup.find(text='Country').next_element.string 
-        except:
+        except AttributeError:
+            # check if it's a blend
             if 'Blend' in blend_or_origin:
                 region = 'Blend'
             pass

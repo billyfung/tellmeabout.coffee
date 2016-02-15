@@ -40,6 +40,7 @@ def scrape_bluebottle():
                 if country_from_name(details) != '':
                     region = details
             except AttributeError:
+                # if it's an espresso, then it's okay to not have region
                 if 'Espresso' in name:
                     region = ""        
             size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
