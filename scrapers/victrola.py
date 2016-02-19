@@ -34,13 +34,13 @@ def scrape_victrola():
             continue
         try:
             size = coffee_soup.find('select').option.string[:4]
-        except:
+        except AttributeError:
             logging.info('Cannot find size for {}'.format(name))
             continue
         try:
             price = float(coffee_soup.find(itemprop='price').string.strip()[2:])
             active = True
-        except:
+        except AttributeError:
             # its sold out
             active = False
         d = coffee_soup.find('h4', {'class':'mobile'}).next_siblings

@@ -22,13 +22,15 @@ def add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_co
         try: 
             old_coffees[0].put()
             coffees_updated +=1
-        except:
+        except AttributeError:
+            # error putting the coffee into the datastore
             error_coffees.append(coffee_data['product_page'])
     else: 
         coffee=Coffee(**coffee_data)
         try:
             coffee.put()
             coffees_entered +=1
-        except:
+        except AttributeError:
+            # error putting the coffee into the datastore
             error_coffees.append(coffee_data['product_page'])
     return [coffees_updated, coffees_entered, error_coffees]

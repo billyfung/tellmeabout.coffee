@@ -36,7 +36,8 @@ def scrape_stumptown():
             description = coffee_soup.find('div', {'class':'product _description'}).p.string
             try:
                 notes = coffee_soup.h3.string.replace('&',',').lower().split(',')
-            except:
+            except AttributeError:
+                # no notes found
                 pass
             region = country_from_name(name)
             if coffee_soup.h6:

@@ -41,7 +41,8 @@ def scrape_intelli():
             # size gives value + unit
             size = coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).em.next_sibling.strip()[2:]
             active = True
-        except:
+        except AttributeError:
+            logging.info("no price or size for: {}".format(product_url))
             # if 'OUT' in coffee_soup.find('p', {'class': 'coffeeDetailPrice'}).string:
             # its sold out
             active = False
@@ -51,7 +52,8 @@ def scrape_intelli():
         # region + country
         try:
             region = coffee_soup.find(text='Country').next_element.string 
-        except:
+        except AttributeError:
+            # check if it's a blend
             if 'Blend' in blend_or_origin:
                 region = 'Blend'
             pass
