@@ -25,3 +25,12 @@ def scrape_matchstick():
         price = float(price_and_size[0][1:])
         size = price_and_size[1]
         active = True
+        coffee_soup = BeautifulSoup(requests.get(url).content)
+        name = coffee_soup.h1.string
+        # not sure if the descriptions here matter at all
+        description = coffee_soup.find(text='Notes:').next_element.next_element.next_element.next_element.next_element.next_element.next_element
+        # url may had unicode stuff
+        image_url = item.find('img')['src']
+        image_content = requests.get("http:{}".format(image_url)).content
+        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}
+        coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_coffees)
