@@ -31,11 +31,11 @@ def scrape_matchstick():
         description = coffee_soup.find(text='Notes:').next_element.next_element.next_element.next_element.next_element.next_element.next_element
         # url may had unicode stuff
         image_url = item.find('img')['src']
-        image_content = requests.get("http:{}".format(image_url)).content
+        image_content = requests.get(image_url).content
         coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_content}
         coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_coffees)
-    logging.info('Matchstick New Results:{} / {}'.format(coffees_entered, total_coffees))
     
+    logging.info('Matchstick New Results:{} / {}'.format(coffees_entered, total_coffees)) 
     logging.info('Matchstic Updated Results:{} / {}'.format(coffees_updated, total_coffees))
     if error_coffees:
         logging.warning('Matchstick Error coffees are: {}'.format(error_coffees))
