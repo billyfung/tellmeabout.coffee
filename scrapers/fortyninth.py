@@ -28,7 +28,7 @@ def scrape_fortyninth():
             logging.info("Getting url: {}".format(product_url))
             r = requests.get(product_url)
             coffee_soup = BeautifulSoup(r.content)
-            #logging.info("Title: {}".format(coffee_soup.title))
+            # logging.info("Title: {}".format(coffee_soup.title))
             details = coffee_soup.find('div', itemprop='description')
             d = details.p
             for sentence in d:

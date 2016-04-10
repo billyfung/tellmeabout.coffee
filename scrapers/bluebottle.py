@@ -6,6 +6,7 @@ import logging
 
 # scraping Blue Bottle roasters
 
+
 def scrape_bluebottle():
     roaster = 'Blue Bottle'
     bluebottle = 'https://bluebottlecoffee.com/store/coffee'
@@ -30,11 +31,11 @@ def scrape_bluebottle():
             r = requests.get(product_url)
             coffee_soup = BeautifulSoup(r.content, "html.parser")
             active = True
-            price = float(coffee_soup.find('span', {'class':'js-variant-price'}).string[1:])
+            price = float(coffee_soup.find('span', {'class':'js-variant-price'}).string)
             description = coffee_soup.find('p', {'class':'spec-overview'}).string
             notes = coffee_soup.p.string.lower().split(',')
-                # only works for not single origin
-            region = country_from_name(name) 
+            # only works for not single origin
+            region = country_from_name(name)
             try:
                 details = coffee_soup.find('p', {'class':'spec-details'}).contents[0].strip()
                 if country_from_name(details) != '':
@@ -42,8 +43,8 @@ def scrape_bluebottle():
             except AttributeError:
                 # if it's an espresso, then it's okay to not have region
                 if 'Espresso' in name:
-                    region = ""        
-            size = coffee_soup.find('label', {'for':'cart_item_quantity'}).string[10:-1].replace('Bag', '').strip()
+                    region = ""
+            size = coffee_soup.find('select', {'id':'cart_item_model_id'}).option.string.split('Bag')[0]
             image_url = coffee_soup.img['src']
             image_content = requests.get(image_url).content
             coffee_data = {'name': name, 'roaster': roaster, 'description': description, 'price': price, 'notes': notes, 'region': region, 'active': active, 'product_page': product_url, 'size': size, 'image': image_content}
@@ -53,6 +54,4 @@ def scrape_bluebottle():
     logging.info('Blue Bottle Updated Results:{} / {}'.format(coffees_updated, total_coffees))
     if error_coffees:
         logging.warning('Blue Bottle Error coffees are: {}'.format(error_coffees))
-
-
 
