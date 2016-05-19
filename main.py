@@ -103,3 +103,11 @@ def cron_stop_non_default_instances():
         for v in modules.get_versions(m):
             if v != dv: modules.stop_version(m, v)
     return "Success!"
+
+@app.route('/.well-known/acme-challenge/G2w8mZBeKepuNjTBn7t3di6KZrFENs-NKr3a9Bik9_M')
+def lets_encrypt_1():
+    return "G2w8mZBeKepuNjTBn7t3di6KZrFENs-NKr3a9Bik9_M.QYKv5-KD6FP0X-WrO_Ovwi_PKobPJMq8B6hVg4NE3G4"
+
+@app.route('/.well-known/acme-challenge/jvzPG9Cb_FOXMmIW31K57G78bbvfVdW0Uc_T2AvzD_o')
+def lets_encrypt_2():
+    return "jvzPG9Cb_FOXMmIW31K57G78bbvfVdW0Uc_T2AvzD_o.QYKv5-KD6FP0X-WrO_Ovwi_PKobPJMq8B6hVg4NE3G4"
