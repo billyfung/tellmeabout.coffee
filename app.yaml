@@ -8,8 +8,14 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
+
 # Handlers define how to route requests to your application.
 handlers:
+- url: /.well-known/acme-challenge/(.*)
+  mime_type: text/plain
+  static_files: well-known/acme-challenge/\1
+  upload: well-known/acme-challenge/.*
+
 - url: /cron/.*
   script: main.app
   login: admin

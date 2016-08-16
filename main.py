@@ -104,14 +104,7 @@ def cron_stop_non_default_instances():
             if v != dv: modules.stop_version(m, v)
     return "Success!"
 
-@app.route('/.well-known/acme-challenge/lXJknGd-VqAb6BPO1qKTV7ssnSMtz1eIIjlRH7pYC48M')
-def lets_encrypt_1():
-    return "G2w8mZBeKepuNjTBn7t3di6KZrFENs-NKr3a9Bik9_M.QYKv5-KD6FP0X-WrO_Ovwi_PKobPJMq8B6hVg4NE3G4"
-
-@app.route('/.well-known/acme-challenge/jvzPG9Cb_FOXMmIW31K57G78bbvfVdW0Uc_T2AvzD_o')
-def lets_encrypt_2():
-    return "jvzPG9Cb_FOXMmIW31K57G78bbvfVdW0Uc_T2AvzD_o.QYKv5-KD6FP0X-WrO_Ovwi_PKobPJMq8B6hVg4NE3G4"
-
-@app.route('/.well-known/acme-challenge/lXJknGd-VqAb6BPO1qKTV7ssnSMtz1eIIjlRH7pYC48')
-def lets_encryp_3():
-    return "lXJknGd-VqAb6BPO1qKTV7ssnSMtz1eIIjlRH7pYC48.R6zFrm0RDSHqt8wf9mDI-vtPV1zgxRMtYG8QEn9QbWI"
+@app.route('/.well-known/acme-challenge/<path:path>')
+def acme_challenge(path):
+    return send_from_directory('well-known/acme-challenge',
+                               path, mimetype='text/plain')
