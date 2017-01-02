@@ -34,12 +34,28 @@ def scrape_intelli():
         price = float(item['price'])
         size = '12oz'
         active = True
-        image_url = 'https://www.intelligentsiacoffee.com/media/catalog/product' + item['small_image']
+        image_url = 'https://www.intelligentsiacoffee.com/media/catalog/product' + item[
+            'small_image']
         image_blob = requests.get(image_url).content
-        coffee_data = {'name':name, 'roaster':roaster, 'description':description, 'price':price, 'notes':notes, 'region':region, 'active':active, 'product_page':product_url, 'size':size, 'image': image_blob}
-        coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(coffee_data, coffees_updated, coffees_entered, error_coffees)
+        coffee_data = {
+            'name': name,
+            'roaster': roaster,
+            'description': description,
+            'price': price,
+            'notes': notes,
+            'region': region,
+            'active': active,
+            'product_page': product_url,
+            'size': size,
+            'image': image_blob
+        }
+        coffees_updated, coffees_entered, error_coffees = add_or_update_coffee(
+            coffee_data, coffees_updated, coffees_entered, error_coffees)
 
-    logging.info('Intelligentsia New Results:{} / {}'.format(coffees_entered, total_coffees))
-    logging.info('Intelligentsia Updated Results:{} / {}'.format(coffees_updated, total_coffees))
+    logging.info('Intelligentsia New Results:{} / {}'.format(coffees_entered,
+                                                             total_coffees))
+    logging.info('Intelligentsia Updated Results:{} / {}'.format(
+        coffees_updated, total_coffees))
     if error_coffees:
-        logging.warning('Intelligensia Error coffees are: {}'.format(error_coffees))
+        logging.warning('Intelligensia Error coffees are: {}'.format(
+            error_coffees))
