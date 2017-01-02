@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import json
 import requests
 from models import Coffee
 from helpers import add_or_update_coffee
@@ -13,7 +12,7 @@ def scrape_intelli():
     intelli = 'https://www.intelligentsiacoffee.com/catalog/ajax/products/?filter%5Bcat%5D=5'
     r = requests.get(intelli)
     soup = BeautifulSoup(r.content, "html.parser")
-    x = json.loads(soup.text)
+    x = r.json()
 
     total_coffees = len(x['data'])
     coffees_entered = 0
