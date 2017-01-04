@@ -3,7 +3,7 @@
 # https://developers.google.com/appengine/docs/python/config/appconfig
 # for details.
 application: tellmeaboutcoffee
-version: alpha-002
+version: 1-01
 runtime: python27
 api_version: 1
 threadsafe: yes
