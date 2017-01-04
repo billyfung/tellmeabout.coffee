@@ -7,8 +7,10 @@ import logging
 
 def scrape_fortyninth():
     roaster = '49th Parallel'
-    base_url = 'http://49thcoffee.com/collections/coffee'
-    r = requests.get(base_url)
+    coffee_url = 'http://49th-parallel.myshopify.com/collections/coffee'
+    base_url = 'https://49th-parallel.myshopify.com'
+    
+    r = requests.get(coffee_url)
     soup = BeautifulSoup(r.content, "html.parser")
     coffees_for_sale = soup.find_all('li', {'class': 'product-listing'})
     total_coffees = len(coffees_for_sale)
@@ -24,7 +26,7 @@ def scrape_fortyninth():
             total_coffees -= 1
         else:
             url = item.a['href']
-            product_url = 'http://49thcoffee.com' + url
+            product_url = base_url + url
             logging.info("Getting url: {}".format(product_url))
             r = requests.get(product_url)
             coffee_soup = BeautifulSoup(r.content, "html.parser")
