@@ -8,8 +8,8 @@ import re
 
 def scrape_victrola():
     roaster = 'Victrola'
-    base_url = 'http://www.victrolacoffee.com'
-    victrola = 'http://www.victrolacoffee.com/collections/all-coffee-offerings'
+    base_url = 'https://victrola.myshopify.com'
+    victrola = 'https://victrola.myshopify.com/collections/all-coffee-offerings'
 
     r = requests.get(victrola)
     soup = BeautifulSoup(r.content, "html.parser")
