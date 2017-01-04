@@ -8,8 +8,8 @@ import re
 # scraping heart
 def scrape_heart():
     roaster = 'Heart'
-    heart_beans = 'http://www.heartroasters.com/collections/beans'
-    heart_url = 'http://www.heartroasters.com'
+    heart_beans = 'https://www.heartroasters.com/collections/beans'
+    heart_url = 'https://www.heartroasters.com'
 
     r = requests.get(heart_beans)
     soup = BeautifulSoup(r.content, "html.parser")
