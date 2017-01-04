@@ -10,8 +10,9 @@ def scrape_heart():
     roaster = 'Heart'
     heart_beans = 'https://heartcoffee.myshopify.com/collections/beans'
     heart_url = 'https://heartcoffee.myshopify.com'
+    host = 'heartcoffee.myshopify.com'
 
-    r = requests.get(heart_beans)
+    r = requests.get(heart_beans, headers={"Host": host})
     soup = BeautifulSoup(r.content, "html.parser")
     all_coffees_for_sale = soup.find_all('a', {'class':'grid__image'})
     all_coffee_links = []
@@ -25,7 +26,7 @@ def scrape_heart():
     for url in all_coffee_links:
         name,price,description,notes,region,active,size = [""] * 7
         logging.info("Getting url: {}".format(url))
-        r = requests.get(url)
+        r = requests.get(url, headers={"Host": host})
         coffee_soup = BeautifulSoup(r.content, "html.parser")
         blend = False
         active = True
