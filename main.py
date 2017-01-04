@@ -70,10 +70,10 @@ def cron_scrape():
         scrapers.scrape_intelli()
         scrapers.scrape_victrola()
         scrapers.scrape_stumptown()
-        scrapers.scrape_heart()
         scrapers.scrape_bluebottle()
         scrapers.scrape_fortyninth()
         scrapers.scrape_matchstick()
+        scrapers.scrape_heart()
         memcache.flush_all()
     except Exception as e:
         logging.warning("Error: {}".format(e))
