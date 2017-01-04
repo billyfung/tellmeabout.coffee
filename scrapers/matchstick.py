@@ -9,8 +9,8 @@ from helpers import add_or_update_coffee
 
 def scrape_matchstick():
     roaster = "Matchstick"
-    base_url = "http://www.matchstickyvr.com"
-    r = requests.get("http://www.matchstickyvr.com/collections/coffee/")
+    base_url = "https://matchstickcoffee80.myshopify.com.com"
+    r = requests.get("https://matchstickcoffee80.myshopify.com.com/collections/coffee/")
     soup = BeautifulSoup(r.content, "html.parser")
 
     coffees_for_sale = soup.select('div.productItem')
